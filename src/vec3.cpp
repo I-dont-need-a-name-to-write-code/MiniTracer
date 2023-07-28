@@ -28,7 +28,23 @@ namespace vec_math {
     float &vec3::z() { return this->v[2]; }
     const float &vec3::x() const { return this->v[0]; } 
     const float &vec3::y() const { return this->v[1]; } 
-    const float &vec3::z() const { return this->v[2]; } 
+    const float &vec3::z() const { return this->v[2]; }     
+
+    vec3 clamp_vector(const vec3 &a, const vec3 &min, const vec3 &max) {
+        return vec3( clamp_float(a.v[0], min.v[0], max.v[0]),
+                     clamp_float(a.v[1], min.v[1], max.v[1]), 
+                     clamp_float(a.v[2], min.v[2], max.v[2]) );
+    }
+
+    vec3 clamp_vector_value(const vec3 &a, const float min, const float max) {
+        return vec3( clamp_float(a.v[0], min, max),
+                     clamp_float(a.v[1], min, max), 
+                     clamp_float(a.v[2], min, max) );
+    }
+
+    vec3 operator-(const vec3& a) {
+        return vec3(-a.v[0], -a.v[1], -a.v[2]);
+    }
 
     vec3 operator+(const vec3 &a, const vec3& b) {
         return vec3( (a.v[0] + b.v[0]), 
@@ -81,18 +97,49 @@ namespace vec_math {
     vec3 normalize(const vec3 &a) {
         return (a / a.length());
     }
+
+    float get_distance_squared(const vec3 &a, const vec3 &b) {
+        return (b - a).length_squared();
+    }
+
+    float get_distance(const vec3 &a, const vec3 &b) {
+        return sqrtf(get_distance_squared(a, b));
+    }
     
-    vec3 dot(const vec3 &a, const vec3 &b) {
-        return vec3();
+    float dot(const vec3 &a, const vec3 &b) {
+        return ( (a.v[0] * b.v[0]) + 
+                 (a.v[1] * b.v[1]) +
+                 (a.v[2] * b.v[2]) );
     }
 
     vec3 cross(const vec3 &a, const vec3 &b) {
-        return vec3();
+        return vec3( (a.v[1] * b.v[2] - a.v[2] * b.v[1]),
+                     (a.v[2] * b.v[0] - a.v[0] * b.v[2]),
+                     (a.v[0] * b.v[1] - a.v[1] * b.v[0]) );
     }
 
-    std::ostream& operator<<(std::ostream& out, const vec3& vec) {
+    std::ostream &operator<<(std::ostream& out, const vec3& vec) {
         out << "[" << vec.v[0] << ", " << vec.v[1] << ", " << vec.v[2] << "]";
         return out;
+    }
+
+    // general math functions
+    
+    float rand_float() {
+        return ((float)rand() / (float)RAND_MAX);  
+    }
+
+    vec3 rand_vec3(const float min, const float max) {        
+        float range = (max - min);
+        return vec3( min + rand_float() * range,
+                     min + rand_float() * range, 
+                     min + rand_float() * range );
+    }
+
+    float clamp_float(float x, float min, float max) {
+        if(x < min) return min;
+        if(x > max) return max;
+        return x;
     }
 
 }
