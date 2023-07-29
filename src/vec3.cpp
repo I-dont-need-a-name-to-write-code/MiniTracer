@@ -30,16 +30,20 @@ namespace vec_math {
     const float &vec3::y() const { return this->v[1]; } 
     const float &vec3::z() const { return this->v[2]; }     
 
-    vec3 clamp_vector(const vec3 &a, const vec3 &min, const vec3 &max) {
-        return vec3( clamp_float(a.v[0], min.v[0], max.v[0]),
-                     clamp_float(a.v[1], min.v[1], max.v[1]), 
-                     clamp_float(a.v[2], min.v[2], max.v[2]) );
+    vec3 lerp(const vec3 &a, const vec3 &b, const float t) {
+        return (a + (b - a) * t);
     }
 
-    vec3 clamp_vector_value(const vec3 &a, const float min, const float max) {
-        return vec3( clamp_float(a.v[0], min, max),
-                     clamp_float(a.v[1], min, max), 
-                     clamp_float(a.v[2], min, max) );
+    vec3 clamp(const vec3 &a, const vec3 &min, const vec3 &max) {
+        return vec3( clamp(a.v[0], min.v[0], max.v[0]),
+                     clamp(a.v[1], min.v[1], max.v[1]), 
+                     clamp(a.v[2], min.v[2], max.v[2]) );
+    }
+
+    vec3 clamp(const vec3 &a, const float min, const float max) {
+        return vec3( clamp(a.v[0], min, max),
+                     clamp(a.v[1], min, max), 
+                     clamp(a.v[2], min, max) );
     }
 
     vec3 operator-(const vec3& a) {
@@ -107,7 +111,7 @@ namespace vec_math {
     }
     
     float dot(const vec3 &a, const vec3 &b) {
-        return ( (a.v[0] * b.v[0]) + 
+        return ( (a.v[0] * b.v[0]) +
                  (a.v[1] * b.v[1]) +
                  (a.v[2] * b.v[2]) );
     }
@@ -116,6 +120,9 @@ namespace vec_math {
         return vec3( (a.v[1] * b.v[2] - a.v[2] * b.v[1]),
                      (a.v[2] * b.v[0] - a.v[0] * b.v[2]),
                      (a.v[0] * b.v[1] - a.v[1] * b.v[0]) );
+    }
+
+    float angle_between(const vec3 &a, const vec3 &b) {
     }
 
     std::ostream &operator<<(std::ostream& out, const vec3& vec) {
@@ -136,7 +143,11 @@ namespace vec_math {
                      min + rand_float() * range );
     }
 
-    float clamp_float(float x, float min, float max) {
+    float lerp(const float a, const float b, const float t) {
+        return (a + (b - a) * t);
+    }
+
+    float clamp(float x, float min, float max) {
         if(x < min) return min;
         if(x > max) return max;
         return x;

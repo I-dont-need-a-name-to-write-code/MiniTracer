@@ -22,8 +22,9 @@ namespace vec_math {
         const float &z() const;
        
         // math operations
-        friend vec3 clamp_vector(const vec3 &a, const vec3 &min, const vec3 &max);
-        friend vec3 clamp_vector_value(const vec3 &a, const float min, const float max);
+        friend vec3 lerp(const vec3 &a, const vec3 &b, const float t);
+        friend vec3 clamp(const vec3 &a, const vec3 &min, const vec3 &max);
+        friend vec3 clamp(const vec3 &a, const float min, const float max);
         
         friend vec3 operator-(const vec3& a);
         friend vec3 operator+(const vec3 &a, const vec3& b);
@@ -41,6 +42,7 @@ namespace vec_math {
         friend float get_distance(const vec3 &a, const vec3 &b);
         friend float dot(const vec3 &a, const vec3 &b);
         friend vec3 cross(const vec3 &a, const vec3 &b);
+        friend float angle_between(const vec3 &a, const vec3 &b);
 
         // debug
         friend std::ostream &operator<<(std::ostream& out, const vec3& vec);
@@ -51,8 +53,9 @@ namespace vec_math {
      
     // general math functions
     float rand_float();
-    vec3 rand_vec3(const float min, const float max);
-    float clamp_float(float x, float min, float max);
+    vec3 rand_vec3(const float min = -1.0f, const float max = 1.0f);
+    float lerp(const float a, const float b, const float t);
+    float clamp(float x, float min, float max);
 }
 
 #endif // VEC3_H
