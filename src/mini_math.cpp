@@ -126,8 +126,8 @@ namespace mini_math {
         return acosf(dot(a, b) / sqrt(a.length_squared() * b.length_squared()));
     }
 
-    vec3 reflect(const vec3 &ir, const vec3 &normal) {
-        
+    vec3 reflect(const vec3 &incident_ray, const vec3 &normal) {
+        return incident_ray - (2 * dot(incident_ray, normal) * normal);
     }
 
     std::ostream &operator<<(std::ostream& out, const vec3& vec) {

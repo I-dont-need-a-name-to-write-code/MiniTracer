@@ -20,8 +20,10 @@ namespace mini_math {
         // getter and setter
         float &x();
         const float &x() const;
+
         float &y();
         const float &y() const;
+
         float &z();
         const float &z() const;
        
@@ -47,7 +49,7 @@ namespace mini_math {
         friend float dot(const vec3 &a, const vec3 &b);
         friend vec3 cross(const vec3 &a, const vec3 &b);
         friend float angle_between(const vec3 &a, const vec3 &b);
-        friend vec3 reflect(const vec3 &ir, const vec3 &normal);
+        friend vec3 reflect(const vec3 &incident_ray, const vec3 &normal);
 
         // debug
         friend std::ostream &operator<<(std::ostream& out, const vec3& vec);
