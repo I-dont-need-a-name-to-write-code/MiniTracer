@@ -1,6 +1,6 @@
-#include "../include/vec3.h"
+#include "../include/mini_math.h"
 
-namespace vec_math {
+namespace mini_math {
 
     vec3::vec3(float x, float y, float z) {
         this->v[0] = x; 
@@ -123,6 +123,11 @@ namespace vec_math {
     }
 
     float angle_between(const vec3 &a, const vec3 &b) {
+        return acosf(dot(a, b) / sqrt(a.length_squared() * b.length_squared()));
+    }
+
+    vec3 reflect(const vec3 &ir, const vec3 &normal) {
+        
     }
 
     std::ostream &operator<<(std::ostream& out, const vec3& vec) {
@@ -151,6 +156,14 @@ namespace vec_math {
         if(x < min) return min;
         if(x > max) return max;
         return x;
+    }
+
+    float rad_to_deg(float radians) {
+        return radians * (180 / M_PI);
+    }
+
+    float deg_to_rad(float degrees) {
+        return degrees * (M_PI / 180);
     }
 
 }

@@ -1,10 +1,14 @@
-#ifndef VEC3_H
-#define VEC3_H
+#ifndef MINI_MATH_H
+#define MINI_MATH_H
 
 #include <iostream>
 #include <math.h>
 
-namespace vec_math {
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846f
+#endif
+
+namespace mini_math {
     
     class vec3 {
     public:
@@ -43,6 +47,7 @@ namespace vec_math {
         friend float dot(const vec3 &a, const vec3 &b);
         friend vec3 cross(const vec3 &a, const vec3 &b);
         friend float angle_between(const vec3 &a, const vec3 &b);
+        friend vec3 reflect(const vec3 &ir, const vec3 &normal);
 
         // debug
         friend std::ostream &operator<<(std::ostream& out, const vec3& vec);
@@ -56,6 +61,12 @@ namespace vec_math {
     vec3 rand_vec3(const float min = -1.0f, const float max = 1.0f);
     float lerp(const float a, const float b, const float t);
     float clamp(float x, float min, float max);
+    float rad_to_deg(float radians);
+    float deg_to_rad(float degrees);
+
+    using color3 = vec3;
+    using point3 = vec3;
+    using float3 = vec3;
 }
 
-#endif // VEC3_H
+#endif // MINI_MATH_H

@@ -1,16 +1,13 @@
 #include <iostream>
-#include "../include/vec3.h"
+#include "../include/mini_math.h"
 
-using namespace vec_math;
+using namespace mini_math;
 
 int main(void) {
     srand(time(NULL));
-    vec3 a{ -1, -1, -1 };
-    vec3 b = -a;
-    std::cout << lerp(a, b, 0.0) << std::endl;
-    std::cout << lerp(a, b, 0.25) << std::endl;
-    std::cout << lerp(a, b, 0.5) << std::endl;
-    std::cout << lerp(a, b, 0.75) << std::endl;
-    std::cout << lerp(a, b, 1.0) << std::endl;
+    float3 a{ 2, -1, 3 };
+    float3 b{ 2, 0, 1 };
+    std::cout << angle_between(a, b) << "\n";
+    std::cout << rad_to_deg(angle_between(a, b)) << "\n";
     return 0;
 }
