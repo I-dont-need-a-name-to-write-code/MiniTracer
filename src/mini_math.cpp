@@ -137,15 +137,23 @@ namespace mini_math {
 
     // general math functions
     
-    float rand_float() {
-        return ((float)rand() / (float)RAND_MAX);  
+    uint32_t pcg_hash(uint32_t input) {
+        uint32_t state = input * 747796405u + 2891336453u;
+        uint32_t word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+        return (word >> 22u) ^ word;
+    }
+    
+    float rand_float(uint32_t &seed) {
+        seed = pcg_hash(seed);
+        constexpr uint32_t UINT32_T_MAX = std::numeric_limits<uint32_t>::max();
+        return ((float)seed / (float)UINT32_T_MAX);  
     }
 
-    vec3 rand_vec3(const float min, const float max) {        
+    vec3 rand_vec3(uint32_t &seed, const float min, const float max) { 
         float range = (max - min);
-        return vec3( min + rand_float() * range,
-                     min + rand_float() * range, 
-                     min + rand_float() * range );
+        return vec3( min + rand_float(seed) * range,
+                     min + rand_float(seed) * range, 
+                     min + rand_float(seed) * range );
     }
 
     float lerp(const float a, const float b, const float t) {

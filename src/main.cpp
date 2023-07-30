@@ -1,15 +1,18 @@
 #include <iostream>
+#include <thread>
 #include "../include/mini_math.h"
 
 using namespace mini_math;
 
 int main(void) {
-    srand(time(NULL));
-    
-    vec3 i { 1, -1, 0 };
-    vec3 n { 0, 1, 0 };
-
-    std::cout << reflect(i, n) << std::endl;
-
+    uint32_t seed = time(NULL);
+    std::cout << rand_float(seed) << std::endl;
+    std::cout << rand_float(seed) << std::endl;
+    std::cout << rand_float(seed) << std::endl;
+    std::cout << rand_float(seed) << std::endl;
+    std::cout << rand_float(seed) << std::endl;
+    std::cout << rand_float(seed) << std::endl;
+    std::cout << rand_float(seed) << std::endl;
+    std::cout << rand_float(seed) << std::endl;
     return 0;
 }

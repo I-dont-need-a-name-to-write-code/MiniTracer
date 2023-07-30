@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <limits>
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846f
@@ -13,7 +14,7 @@ namespace mini_math {
     class vec3 {
     public:
         // constructors
-        vec3(float x = 0, float y = 0, float z = 0);
+        vec3(float x = 0.f, float y = 0.f, float z = 0.f);
         vec3(const vec3& other);
         vec3 &operator=(const vec3& other);
 
@@ -59,8 +60,9 @@ namespace mini_math {
     };
      
     // general math functions
-    float rand_float();
-    vec3 rand_vec3(const float min = -1.0f, const float max = 1.0f);
+    uint32_t pcg_hash(uint32_t input); 
+    float rand_float(uint32_t &seed);
+    vec3 rand_vec3(uint32_t &seed, const float min = -1.0f, const float max = 1.0f);
     float lerp(const float a, const float b, const float t);
     float clamp(float x, float min, float max);
     float rad_to_deg(float radians);
