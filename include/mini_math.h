@@ -9,12 +9,59 @@
     #define M_PI 3.14159265358979323846f
 #endif
 
+#ifndef M_SQRT
+    #define M_SQRT sqrtf
+#endif
+
 namespace mini_math {
+
+    class vec2 {
+    public:
+        vec2(float x = 0.0f, float y = 0.0f);
+        vec2(const vec2& other);
+        vec2 &operator=(const vec2& other);
+        
+        // getter and setter
+        float &x();
+        float &y();
+
+        const float &x() const;
+        const float &y() const;
+
+        // math operations
+        friend vec2 lerp(const vec2 &a, const vec2 &b, const float t);
+        friend vec2 clamp(const vec2 &a, const vec2 &min, const vec2 &max);
+        friend vec2 clamp(const vec2 &a, const float min, const float max);
+
+        friend vec2 operator-(const vec2 &a);
+        friend vec2 operator+(const vec2 &a, const vec2& b);
+        friend vec2 operator-(const vec2 &a, const vec2& b);
+        friend vec2 operator*(const vec2 &a, const vec2& b);
+        friend vec2 operator*(const vec2 &a, float s);
+        friend vec2 operator*(float s, const vec2 &a);
+        friend vec2 operator/(const vec2 &a, const vec2& b);
+        friend vec2 operator/(const vec2 &a, float s);
+   
+        float length_squared() const;
+        float length() const;
+        friend vec2 normalize(const vec2 &a);
+        friend float get_distance_squared(const vec2 &a, const vec2 &b);
+        friend float get_distance(const vec2 &a, const vec2 &b);
+        friend float dot(const vec2 &a, const vec2 &b);
+        friend float cross(const vec2 &a, const vec2 &b);
+        friend float angle_between(const vec2 &a, const vec2 &b);
+        friend vec2 reflect(const vec2 &incident_ray, const vec2 &normal);
+
+        // debug
+        friend std::ostream &operator<<(std::ostream& out, const vec2& vec);
+
+    private:
+            float v[2];
+    };
 
     class vec3 {
     public:
-        // constructors
-        vec3(float x = 0.f, float y = 0.f, float z = 0.f);
+        vec3(float x = 0.0f, float y = 0.0f, float z = 0.0f);
         vec3(const vec3& other);
         vec3 &operator=(const vec3& other);
 
@@ -32,7 +79,7 @@ namespace mini_math {
         friend vec3 clamp(const vec3 &a, const vec3 &min, const vec3 &max);
         friend vec3 clamp(const vec3 &a, const float min, const float max);
         
-        friend vec3 operator-(const vec3& a);
+        friend vec3 operator-(const vec3 &a);
         friend vec3 operator+(const vec3 &a, const vec3& b);
         friend vec3 operator-(const vec3 &a, const vec3& b);
         friend vec3 operator*(const vec3 &a, const vec3& b);
@@ -67,7 +114,8 @@ namespace mini_math {
             ray(const vec3 &orig, const vec3 &dir);
             ray(const ray &other);
             ray &operator=(const ray &other);
-
+            
+            // getter and setter
             vec3 &orig();
             vec3 &dir();
 
@@ -88,6 +136,11 @@ namespace mini_math {
     float deg_to_rad(const float degrees);
     uint32_t pcg_hash(uint32_t input); 
     float random_float(uint32_t &seed);
+
+    vec2 random_vec2(uint32_t &seed, const float min = -1.0f, const float max = 1.0f);
+    vec2 random_in_unit_circle(uint32_t &seed);
+    vec2 random_in_unit_semicircle(uint32_t &seed, const vec2 &normal);
+
     vec3 random_vec3(uint32_t &seed, const float min = -1.0f, const float max = 1.0f);
     vec3 random_in_unit_sphere(uint32_t &seed);
     vec3 random_in_unit_hemisphere(uint32_t &seed, const vec3 &normal);

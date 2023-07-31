@@ -2,6 +2,126 @@
 
 namespace mini_math {
 
+    // VEC2
+    vec2::vec2(float x, float y) {
+        this->v[0] = x;
+        this->v[1] = y;
+    }
+
+    vec2::vec2(const vec2& other) {
+        this->v[0] = other.v[0];
+        this->v[1] = other.v[1];
+    }
+
+    vec2 &vec2::operator=(const vec2& other) {
+        if(this != &other) {
+            this->v[0] = other.v[0];
+            this->v[1] = other.v[1];
+        } 
+        return *this;
+    }
+    
+    float &vec2::x() { return this->v[0]; }
+    float &vec2::y() { return this->v[1]; }
+    
+    const float &vec2::x() const { return this->v[0]; }
+    const float &vec2::y() const { return this->v[1]; }
+    
+    vec2 lerp(const vec2 &a, const vec2 &b, const float t) {
+        return (a + (b - a) * t);
+    }
+
+    vec2 clamp(const vec2 &a, const vec2 &min, const vec2 &max) {
+        return vec2( clamp(a.v[0], min.v[0], max.v[0]),
+                     clamp(a.v[1], min.v[1], max.v[1]) );
+    }
+
+    vec2 clamp(const vec2 &a, const float min, const float max) {        
+        return vec2( clamp(a.v[0], min, max),
+                     clamp(a.v[1], min, max) );
+    }
+    
+    vec2 operator-(const vec2 &a) {
+        return vec2(-a.v[0], -a.v[1]);   
+    }
+
+    vec2 operator+(const vec2 &a, const vec2& b) {
+        return vec2( (a.v[0] + b.v[0]),
+                     (a.v[1] + b.v[1]) );   
+    }
+
+    vec2 operator-(const vec2 &a, const vec2& b) {
+        return vec2( (a.v[0] - b.v[0]),
+                     (a.v[1] - b.v[1]) );   
+    }
+
+    vec2 operator*(const vec2 &a, const vec2& b) {
+        return vec2( (a.v[0] * b.v[0]),
+                     (a.v[1] * b.v[1]) );   
+    }
+
+    vec2 operator*(const vec2 &a, float s) {  
+        return vec2( (a.v[0] * s),
+                     (a.v[1] * s) );   
+    }
+
+    vec2 operator*(float s, const vec2 &a) {
+        return (a * s);  
+    }
+
+    vec2 operator/(const vec2 &a, const vec2& b) {
+        return vec2( (a.v[0] / b.v[0]),
+                     (a.v[1] / b.v[1]) );   
+    }
+
+    vec2 operator/(const vec2 &a, float s) {
+        return (a * (1.0f / s));
+    }
+    
+    float vec2::length_squared() const {
+        return ( (this->v[0] * this->v[0]) +
+                 (this->v[1] * this->v[1]) );
+    }
+
+    float vec2::length() const {
+        return M_SQRT(this->length_squared());
+    }
+
+    vec2 normalize(const vec2 &a) {
+        return (a / a.length());
+    }
+
+    float get_distance_squared(const vec2 &a, const vec2 &b) {
+        return (b - a).length_squared();
+    }
+
+    float get_distance(const vec2 &a, const vec2 &b) {
+        return M_SQRT(get_distance_squared(a, b));
+    }
+
+    float dot(const vec2 &a, const vec2 &b) {
+        return ( (a.v[0] * b.v[0]) +
+                 (a.v[1] * b.v[1]) );
+    }
+
+    float cross(const vec2 &a, const vec2 &b) {
+        return ( (a.v[0] * b.v[1]) - 
+                 (a.v[1] * b.v[0]) );
+    }
+
+    float angle_between(const vec2 &a, const vec2 &b) {
+        return acosf(dot(a, b) / M_SQRT(a.length_squared() * b.length_squared()));
+    }
+
+    vec2 reflect(const vec2 &incident_ray, const vec2 &normal) {
+        return incident_ray - (2 * dot(incident_ray, normal) * normal);
+    }
+    
+    std::ostream &operator<<(std::ostream& out, const vec2& vec) {
+        out << "[" << vec.v[0] << ", " << vec.v[1] << "]";
+        return out;
+    }
+
     // VEC3
     vec3::vec3(float x, float y, float z) {
         this->v[0] = x; 
@@ -48,7 +168,7 @@ namespace mini_math {
                      clamp(a.v[2], min, max) );
     }
 
-    vec3 operator-(const vec3& a) {
+    vec3 operator-(const vec3 &a) {
         return vec3(-a.v[0], -a.v[1], -a.v[2]);
     }
 
@@ -87,7 +207,7 @@ namespace mini_math {
     }
 
     vec3 operator/(const vec3 &a, float s) {
-        return (a * (1 / s));
+        return (a * (1.0f / s));
     }
 
     float vec3::length_squared() const {
@@ -97,7 +217,7 @@ namespace mini_math {
     }
     
     float vec3::length() const {
-        return sqrtf(this->length_squared());
+        return M_SQRT(this->length_squared());
     }
 
     vec3 normalize(const vec3 &a) {
@@ -109,7 +229,7 @@ namespace mini_math {
     }
 
     float get_distance(const vec3 &a, const vec3 &b) {
-        return sqrtf(get_distance_squared(a, b));
+        return M_SQRT(get_distance_squared(a, b));
     }
     
     float dot(const vec3 &a, const vec3 &b) {
@@ -125,7 +245,7 @@ namespace mini_math {
     }
 
     float angle_between(const vec3 &a, const vec3 &b) {
-        return acosf(dot(a, b) / sqrt(a.length_squared() * b.length_squared()));
+        return acosf(dot(a, b) / M_SQRT(a.length_squared() * b.length_squared()));
     }
 
     vec3 reflect(const vec3 &incident_ray, const vec3 &normal) {
@@ -198,11 +318,31 @@ namespace mini_math {
         return ((float)seed / (float)UINT32_T_MAX);  
     }
 
+    vec2 random_vec2(uint32_t &seed, const float min, const float max) {        
+        float range = (max - min);
+        return vec2( (min + random_float(seed) * range),
+                     (min + random_float(seed) * range) );
+    }
+
+    vec2 random_in_unit_circle(uint32_t &seed) {
+        vec2 r;
+        do {
+            r = random_vec2(seed, -1.0f, 1.0f);
+        } while(r.length_squared() > 1.0f);
+        return r;
+    }
+
+    vec2 random_in_unit_semicircle(uint32_t &seed, const vec2 &normal) {
+        vec2 r = random_in_unit_circle(seed);
+        if(dot(r, normal) < 0.0f) return -r;
+        return r;
+    }
+
     vec3 random_vec3(uint32_t &seed, const float min, const float max) { 
         float range = (max - min);
-        return vec3( min + random_float(seed) * range,
-                     min + random_float(seed) * range, 
-                     min + random_float(seed) * range );
+        return vec3( (min + random_float(seed) * range),
+                     (min + random_float(seed) * range), 
+                     (min + random_float(seed) * range) );
     }
 
     vec3 random_in_unit_sphere(uint32_t &seed) {
@@ -215,9 +355,7 @@ namespace mini_math {
 
     vec3 random_in_unit_hemisphere(uint32_t &seed, const vec3 &normal) {
         vec3 r = random_in_unit_sphere(seed);
-        if(dot(normal, r) < 0.0f) {
-           return -r;
-        }
+        if(dot(normal, r) < 0.0f) return -r;
         return r;
     }
 
