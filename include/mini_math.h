@@ -20,12 +20,11 @@ namespace mini_math {
 
         // getter and setter
         float &x();
-        const float &x() const;
-
         float &y();
-        const float &y() const;
-
         float &z();
+
+        const float &x() const;
+        const float &y() const;
         const float &z() const;
        
         // math operations
@@ -58,21 +57,41 @@ namespace mini_math {
     private:
         float v[3];
     };
+
+    using color3 = vec3;
+    using point3 = vec3;
+    using float3 = vec3;
+
+    class ray {
+        public: 
+            ray(const vec3 &orig, const vec3 &dir);
+            ray(const ray &other);
+            ray &operator=(const ray &other);
+
+            vec3 &orig();
+            vec3 &dir();
+
+            const vec3 &orig() const;
+            const vec3 &dir() const;
+    
+            vec3 at(const float t);
+
+        private:
+            vec3 direction;
+            vec3 origin;
+    };
      
     // general math functions
     float lerp(const float a, const float b, const float t);
-    float clamp(float x, float min, float max);
-    float rad_to_deg(float radians);
-    float deg_to_rad(float degrees);
+    float clamp(const float x, const float min, const float max);
+    float rad_to_deg(const float radians);
+    float deg_to_rad(const float degrees);
     uint32_t pcg_hash(uint32_t input); 
     float random_float(uint32_t &seed);
     vec3 random_vec3(uint32_t &seed, const float min = -1.0f, const float max = 1.0f);
     vec3 random_in_unit_sphere(uint32_t &seed);
     vec3 random_in_unit_hemisphere(uint32_t &seed, const vec3 &normal);
 
-    using color3 = vec3;
-    using point3 = vec3;
-    using float3 = vec3;
 }
 
 #endif // MINI_MATH_H

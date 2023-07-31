@@ -2,6 +2,7 @@
 
 namespace mini_math {
 
+    // VEC3
     vec3::vec3(float x, float y, float z) {
         this->v[0] = x; 
         this->v[1] = y;
@@ -26,6 +27,7 @@ namespace mini_math {
     float &vec3::x() { return this->v[0]; }
     float &vec3::y() { return this->v[1]; }
     float &vec3::z() { return this->v[2]; }
+
     const float &vec3::x() const { return this->v[0]; } 
     const float &vec3::y() const { return this->v[1]; } 
     const float &vec3::z() const { return this->v[2]; }     
@@ -135,23 +137,52 @@ namespace mini_math {
         return out;
     }
 
+    // RAY
+    ray::ray(const vec3 &orig, const vec3 &dir) {
+        this->origin = orig;
+        this->direction = dir;
+    }
+
+    ray::ray(const ray &other) {
+        this->origin = other.origin;
+        this->direction = other.direction;
+    }
+
+    ray &ray::operator=(const ray &other) {
+        if(this != &other) {
+            this->origin = other.origin;
+            this->direction = other.direction;
+        }
+        return *this;
+    }
+
+    vec3 &ray::orig() { return this->origin; }
+    vec3 &ray::dir() { return this->direction; }
+
+    const vec3 &ray::orig() const { return this->origin; }
+    const vec3 &ray::dir() const { return this->direction; }
+    
+    vec3 ray::at(const float t) { 
+        return (this->origin + (this->direction * t)); 
+    }
+
     // general math functions
     
     float lerp(const float a, const float b, const float t) {
         return (a + (b - a) * t);
     }
 
-    float clamp(float x, float min, float max) {
+    float clamp(const float x, const float min, const float max) {
         if(x < min) return min;
         if(x > max) return max;
         return x;
     }
 
-    float rad_to_deg(float radians) {
+    float rad_to_deg(const float radians) {
         return radians * (180 / M_PI);
     }
 
-    float deg_to_rad(float degrees) {
+    float deg_to_rad(const float degrees) {
         return degrees * (M_PI / 180);
     }
 
