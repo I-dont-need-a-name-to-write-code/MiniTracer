@@ -10,7 +10,7 @@
 #endif
 
 namespace mini_math {
-    
+
     class vec3 {
     public:
         // constructors
@@ -60,13 +60,15 @@ namespace mini_math {
     };
      
     // general math functions
-    uint32_t pcg_hash(uint32_t input); 
-    float rand_float(uint32_t &seed);
-    vec3 rand_vec3(uint32_t &seed, const float min = -1.0f, const float max = 1.0f);
     float lerp(const float a, const float b, const float t);
     float clamp(float x, float min, float max);
     float rad_to_deg(float radians);
     float deg_to_rad(float degrees);
+    uint32_t pcg_hash(uint32_t input); 
+    float random_float(uint32_t &seed);
+    vec3 random_vec3(uint32_t &seed, const float min = -1.0f, const float max = 1.0f);
+    vec3 random_in_unit_sphere(uint32_t &seed);
+    vec3 random_in_unit_hemisphere(uint32_t &seed, const vec3 &normal);
 
     using color3 = vec3;
     using point3 = vec3;

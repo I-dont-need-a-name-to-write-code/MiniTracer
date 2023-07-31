@@ -137,25 +137,6 @@ namespace mini_math {
 
     // general math functions
     
-    uint32_t pcg_hash(uint32_t input) {
-        uint32_t state = input * 747796405u + 2891336453u;
-        uint32_t word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
-        return (word >> 22u) ^ word;
-    }
-    
-    float rand_float(uint32_t &seed) {
-        seed = pcg_hash(seed);
-        constexpr uint32_t UINT32_T_MAX = std::numeric_limits<uint32_t>::max();
-        return ((float)seed / (float)UINT32_T_MAX);  
-    }
-
-    vec3 rand_vec3(uint32_t &seed, const float min, const float max) { 
-        float range = (max - min);
-        return vec3( min + rand_float(seed) * range,
-                     min + rand_float(seed) * range, 
-                     min + rand_float(seed) * range );
-    }
-
     float lerp(const float a, const float b, const float t) {
         return (a + (b - a) * t);
     }
@@ -172,6 +153,41 @@ namespace mini_math {
 
     float deg_to_rad(float degrees) {
         return degrees * (M_PI / 180);
+    }
+
+    uint32_t pcg_hash(uint32_t input) {
+        uint32_t state = input * 747796405u + 2891336453u;
+        uint32_t word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+        return (word >> 22u) ^ word;
+    }
+    
+    float random_float(uint32_t &seed) {
+        seed = pcg_hash(seed);
+        constexpr uint32_t UINT32_T_MAX = std::numeric_limits<uint32_t>::max();
+        return ((float)seed / (float)UINT32_T_MAX);  
+    }
+
+    vec3 random_vec3(uint32_t &seed, const float min, const float max) { 
+        float range = (max - min);
+        return vec3( min + random_float(seed) * range,
+                     min + random_float(seed) * range, 
+                     min + random_float(seed) * range );
+    }
+
+    vec3 random_in_unit_sphere(uint32_t &seed) {
+        vec3 r;
+        do {
+            r = random_vec3(seed, -1.0f, 1.0f);
+        } while(r.length_squared() > 1.0f);
+        return r;
+    }
+
+    vec3 random_in_unit_hemisphere(uint32_t &seed, const vec3 &normal) {
+        vec3 r = random_in_unit_sphere(seed);
+        if(dot(normal, r) < 0.0f) {
+           return -r;
+        }
+        return r;
     }
 
 }
