@@ -31,6 +31,9 @@ namespace mini_math {
        
         // debug
         friend std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other);
+
+    private:
+        void copy(const Matrix4x4 &other);
             
     public:
         static const Matrix4x4 Identity;
@@ -38,8 +41,6 @@ namespace mini_math {
     private:
         float data[4][4];
 
-    private:
-        void copy(const Matrix4x4 &other);
     };
 
     class vec2 {
