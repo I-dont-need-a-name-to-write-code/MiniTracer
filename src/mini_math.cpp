@@ -2,6 +2,42 @@
 
 namespace mini_math {
 
+    // MATRIX_4x4
+    matrix_4x4::matrix_4x4(float16 data) {
+        for(int i = 0; i < 16; ++i) {
+            this->data.v[i] = data.v[i];
+        }
+    }
+
+    matrix_4x4::matrix_4x4(const matrix_4x4 &other) {
+        for(int i = 0; i < 16; ++i) {
+            this->data.v[i] = other.data.v[i];
+        }
+    }
+
+    matrix_4x4 &matrix_4x4::operator=(const matrix_4x4 &other) {
+        if(this != &other) {            
+            for(int i = 0; i < 16; ++i) {
+                this->data.v[i] = other.data.v[i];
+            }
+        }
+        return *this;
+    }
+
+    std::ostream &operator<<(std::ostream &out, const matrix_4x4 &matrix) {
+        out << "MATRIX_4X4 (DEBUG) : [\n";
+        for(int i = 0; i < 4; ++i) {
+            out << "[";
+            for(int j = 0; j < 4; ++j) {
+                out << matrix.data.v[i * 4 + j];
+                if(j != 3) std::cout << ", ";
+            }
+            out << "]\n";
+        }
+        out << "]";
+        return out;
+    }
+
     // VEC2
     vec2::vec2(float x, float y) {
         this->v[0] = x;

@@ -15,6 +15,20 @@
 
 namespace mini_math {
 
+    struct float16 {
+        float v[16];  
+    };
+
+    class matrix_4x4 {
+    public:
+        matrix_4x4(float16 data);
+        matrix_4x4(const matrix_4x4 &other);
+        matrix_4x4 &operator=(const matrix_4x4 &other);
+        friend std::ostream &operator<<(std::ostream &out, const matrix_4x4 &matrix);
+    private:
+        float16 data;
+    };
+
     class vec2 {
     public:
         vec2(float x = 0.0f, float y = 0.0f);
@@ -58,6 +72,9 @@ namespace mini_math {
     private:
             float v[2];
     };
+
+    using float2 = vec2;
+    using point2 = vec2;
 
     class vec3 {
     public:
@@ -105,10 +122,10 @@ namespace mini_math {
         float v[3];
     };
 
-    using color3 = vec3;
-    using point3 = vec3;
     using float3 = vec3;
-
+    using point3 = vec3;
+    using color3 = vec3;
+    
     class ray {
         public: 
             ray(const vec3 &orig, const vec3 &dir);
