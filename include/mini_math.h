@@ -15,6 +15,33 @@
 
 namespace mini_math {
 
+    class Matrix4x4 {
+    public:
+        Matrix4x4();
+        Matrix4x4(float m00, float m01, float m02, float m03,
+                  float m10, float m11, float m12, float m13,
+                  float m20, float m21, float m22, float m23,
+                  float m30, float m31, float m32, float m33);
+        Matrix4x4(const Matrix4x4 &other);
+        Matrix4x4 &operator=(const Matrix4x4 &other);
+    
+        // getter and setter
+        float &get(uint8_t i, uint8_t j);
+        const float &get(uint8_t i, uint8_t j) const;
+       
+        // debug
+        friend std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other);
+            
+    public:
+        static const Matrix4x4 Identity;
+
+    private:
+        float data[4][4];
+
+    private:
+        void copy(const Matrix4x4 &other);
+    };
+
     class vec2 {
     public:
         vec2(float x = 0.0f, float y = 0.0f);

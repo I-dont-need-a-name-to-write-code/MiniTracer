@@ -2,6 +2,63 @@
 
 namespace mini_math {
 
+    // MATRIX4x4 
+    const Matrix4x4 Matrix4x4::Identity = Matrix4x4(
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    );
+
+    Matrix4x4::Matrix4x4() {
+        this->copy(Matrix4x4::Identity);
+    }
+
+    Matrix4x4::Matrix4x4(float m00, float m01, float m02, float m03,
+                         float m10, float m11, float m12, float m13,
+                         float m20, float m21, float m22, float m23,
+                         float m30, float m31, float m32, float m33) 
+    {
+        this->data[0][0] = m00;  this->data[0][1] = m01; this->data[0][2] = m02; this->data[0][3] = m03;
+        this->data[1][0] = m10;  this->data[1][1] = m11; this->data[1][2] = m12; this->data[1][3] = m13;
+        this->data[2][0] = m20;  this->data[2][1] = m21; this->data[2][2] = m22; this->data[2][3] = m23;
+        this->data[3][0] = m30;  this->data[3][1] = m31; this->data[3][2] = m32; this->data[3][3] = m33;
+    }
+
+    Matrix4x4::Matrix4x4(const Matrix4x4 &other) {
+        this->copy(other);
+    }
+
+    Matrix4x4 &Matrix4x4::operator=(const Matrix4x4 &other) {
+        if(this != &other) {
+            this->copy(other);
+        }
+        return *this;
+    }
+
+    float &Matrix4x4::get(uint8_t i, uint8_t j) { return this->data[i][j]; }
+    const float &Matrix4x4::get(uint8_t i, uint8_t j) const { return this->data[i][j]; }
+    
+    void Matrix4x4::copy(const Matrix4x4 &other) {
+        for(uint8_t i = 0; i < 16; ++i) {
+           *((float*)&this->data + i) = *((float*)&other.data + i);
+        }
+    }
+
+    std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other) {
+        out << "MATRIX4x4 (_DEBUG_) -> [\n";
+        for(uint8_t i = 0; i < 4; ++i) {
+            out << "  [";
+            for(uint8_t j = 0; j < 4; ++j) {
+                out << other.data[i][j];
+                if(j != 3) out << ", ";
+            }
+            out << "]\n";
+        }
+        out << "]";
+        return out;
+    }
+
     // VEC2
     vec2::vec2(float x, float y) {
         this->v[0] = x;
