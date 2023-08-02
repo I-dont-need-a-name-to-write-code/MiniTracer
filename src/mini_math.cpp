@@ -67,14 +67,12 @@ namespace mini_math {
 
     Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b) {
         Matrix4x4 c;
-        float sum;
         for(uint8_t i = 0; i < 4; ++i) {
             for(uint8_t j = 0; j < 4; ++j) { 
-                sum = 0;
+                c.data[i][j] = 0;
                 for(uint8_t k = 0; k < 4; ++k) {
-                    sum += a.data[i][k] * b.data[k][j];
+                    c.data[i][j] += a.data[i][k] * b.data[k][j];
                 }
-                c.data[i][j] = sum;
             }
         }
         return c;
