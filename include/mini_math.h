@@ -15,20 +15,6 @@
 
 namespace mini_math {
 
-    struct float16 {
-        float v[16];  
-    };
-
-    class matrix_4x4 {
-    public:
-        matrix_4x4(float16 data);
-        matrix_4x4(const matrix_4x4 &other);
-        matrix_4x4 &operator=(const matrix_4x4 &other);
-        friend std::ostream &operator<<(std::ostream &out, const matrix_4x4 &matrix);
-    private:
-        float16 data;
-    };
-
     class vec2 {
     public:
         vec2(float x = 0.0f, float y = 0.0f);
