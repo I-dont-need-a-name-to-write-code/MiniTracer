@@ -26,9 +26,14 @@ namespace mini_math {
         Matrix4x4 &operator=(const Matrix4x4 &other);
     
         // getter and setter
-        float &get(uint8_t i, uint8_t j);
-        const float &get(uint8_t i, uint8_t j) const;
+        float &at(uint8_t i, uint8_t j);
+        const float &at(uint8_t i, uint8_t j) const;
        
+        // math operations
+        friend Matrix4x4 operator+(const Matrix4x4 &a, const Matrix4x4 &b);
+        friend Matrix4x4 operator-(const Matrix4x4 &a, const Matrix4x4 &b);
+        friend Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b);
+
         // debug
         friend std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other);
 
@@ -40,7 +45,6 @@ namespace mini_math {
 
     private:
         float data[4][4];
-
     };
 
     class vec2 {

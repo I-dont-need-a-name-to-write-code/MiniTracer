@@ -36,8 +36,8 @@ namespace mini_math {
         return *this;
     }
 
-    float &Matrix4x4::get(uint8_t i, uint8_t j) { return this->data[i][j]; }
-    const float &Matrix4x4::get(uint8_t i, uint8_t j) const { return this->data[i][j]; }
+    float &Matrix4x4::at(uint8_t i, uint8_t j) { return this->data[i][j]; }
+    const float &Matrix4x4::at(uint8_t i, uint8_t j) const { return this->data[i][j]; }
     
     void Matrix4x4::copy(const Matrix4x4 &other) {
         for(uint8_t i = 0; i < 16; ++i) {
@@ -45,8 +45,43 @@ namespace mini_math {
         }
     }
 
+    Matrix4x4 operator+(const Matrix4x4 &a, const Matrix4x4 &b) {
+        Matrix4x4 c;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) { 
+                c.data[i][j] = a.data[i][j] + b.data[i][j];
+            }
+        }
+        return c;
+    }
+
+    Matrix4x4 operator-(const Matrix4x4 &a, const Matrix4x4 &b) {
+        Matrix4x4 c;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) { 
+                c.data[i][j] = a.data[i][j] - b.data[i][j];
+            }
+        }
+        return c;
+    }
+
+    Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b) {
+        Matrix4x4 c;
+        float sum;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) { 
+                sum = 0;
+                for(uint8_t k = 0; k < 4; ++k) {
+                    sum += a.data[i][k] * b.data[k][j];
+                }
+                c.data[i][j] = sum;
+            }
+        }
+        return c;
+    }
+
     std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other) {
-        out << "MATRIX4x4 (_DEBUG_) -> [\n";
+        out << "(_DEBUG_) MATRIX4x4 -> [\n";
         for(uint8_t i = 0; i < 4; ++i) {
             out << "  [";
             for(uint8_t j = 0; j < 4; ++j) {
