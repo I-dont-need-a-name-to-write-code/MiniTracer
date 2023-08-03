@@ -16,7 +16,7 @@ int main(void) {
     );
 
     vec3 v = {
-        1, 2, 3
+        2, 3, 4
     };
 
     std::cout << translate * v << std::endl;
