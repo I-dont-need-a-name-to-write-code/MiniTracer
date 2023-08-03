@@ -52,23 +52,20 @@ namespace mini_math {
         }
     }
 
-    Matrix4x4 &Matrix4x4::transpose() {
-        float temp;
-        for(uint8_t d = 0; d < 3; ++d) {
-            for(uint8_t i = (d + 1); i < 4; ++i) {
-                temp = this->data[d][i];
-                this->data[d][i] = this->data[i][d];
-                this->data[i][d] = temp;
-            }
-        }
-        return *this;
-    }
-
     vec3 operator*(const Matrix4x4 &m, const vec3 &v) {
         vec3 res;
         res.x() = (m.data[0][0] * v.x()) + (m.data[0][1] * v.y()) + (m.data[0][2] * v.z()) + m.data[0][3];
         res.y() = (m.data[1][0] * v.x()) + (m.data[1][1] * v.y()) + (m.data[1][2] * v.z()) + m.data[1][3];
-        res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];  
+        res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];
+        float w = (m.data[3][0] * v.x()) + (m.data[3][1] * v.y()) + (m.data[3][2] * v.z()) + m.data[3][3];
+        
+        if((w != 1.0f) && (w != 0.0f) && (w != -0.0f)) {
+            float inv_w = 1.0f / w;
+            res.x() *= inv_w;
+            res.y() *= inv_w;
+            res.z() *= inv_w;
+        }
+
         return res;
     }
 
@@ -104,6 +101,19 @@ namespace mini_math {
         }
         return c;
     }
+
+    Matrix4x4 &Matrix4x4::transpose() {
+        float temp;
+        for(uint8_t d = 0; d < 3; ++d) {
+            for(uint8_t i = (d + 1); i < 4; ++i) {
+                temp = this->data[d][i];
+                this->data[d][i] = this->data[i][d];
+                this->data[i][d] = temp;
+            }
+        }
+        return *this;
+    }
+
 
     Matrix4x4 transpose(const Matrix4x4 &a) {
         Matrix4x4 a_t;
