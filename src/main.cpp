@@ -8,18 +8,14 @@ static uint32_t seed = time(NULL);
 
 int main(void) {
  
-    Matrix4x4 translate (
-        10,  0,  0,  10,
-         0, 10,  0,  10,
-         0,  0, 10,  10,
-         0,  0,  0,  10
+    Matrix4x4 a (
+        1, 1, 1, -1,
+        1, 1, -1, 1,
+        1, -1, 1, 1,
+        -1, 1, 1, 1
     );
 
-    vec3 v = {
-        2, 3, 4
-    };
-
-    std::cout << translate * v << std::endl;
-
+    std::cout << determinant(a) << std::endl;
+    
     return 0;
 }

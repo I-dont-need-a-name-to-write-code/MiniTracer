@@ -102,6 +102,20 @@ namespace mini_math {
         return c;
     }
 
+    Matrix4x4 operator*(const Matrix4x4 &a, const float scaler) {
+        Matrix4x4 res;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) {
+                res.data[i][j] = scaler * a.data[i][j];
+            }
+        }
+        return res;
+    }
+
+    Matrix4x4 operator*(const float scaler, const Matrix4x4 &a) {
+        return (a * scaler);
+    }
+
     Matrix4x4 &Matrix4x4::transpose() {
         float temp;
         for(uint8_t d = 0; d < 3; ++d) {
@@ -126,7 +140,18 @@ namespace mini_math {
     }
 
     float determinant(const Matrix4x4 &a) {
-           
+        return ( (a.data[0][3] * a.data[1][2] * a.data[2][1] * a.data[3][0]) - (a.data[0][2] * a.data[1][3] * a.data[2][1] * a.data[3][0]) -
+                 (a.data[0][3] * a.data[1][1] * a.data[2][2] * a.data[3][0]) + (a.data[0][1] * a.data[1][3] * a.data[2][2] * a.data[3][0]) +
+                 (a.data[0][2] * a.data[1][1] * a.data[2][3] * a.data[3][0]) - (a.data[0][1] * a.data[1][2] * a.data[2][3] * a.data[3][0]) -
+                 (a.data[0][3] * a.data[1][2] * a.data[2][0] * a.data[3][1]) + (a.data[0][2] * a.data[1][3] * a.data[2][0] * a.data[3][1]) +
+                 (a.data[0][3] * a.data[1][0] * a.data[2][2] * a.data[3][1]) - (a.data[0][0] * a.data[1][3] * a.data[2][2] * a.data[3][1]) -
+                 (a.data[0][2] * a.data[1][0] * a.data[2][3] * a.data[3][1]) + (a.data[0][0] * a.data[1][2] * a.data[2][3] * a.data[3][1]) +
+                 (a.data[0][3] * a.data[1][1] * a.data[2][0] * a.data[3][2]) - (a.data[0][1] * a.data[1][3] * a.data[2][0] * a.data[3][2]) -
+                 (a.data[0][3] * a.data[1][0] * a.data[2][1] * a.data[3][2]) + (a.data[0][0] * a.data[1][3] * a.data[2][1] * a.data[3][2]) +
+                 (a.data[0][1] * a.data[1][0] * a.data[2][3] * a.data[3][2]) - (a.data[0][0] * a.data[1][1] * a.data[2][3] * a.data[3][2]) -
+                 (a.data[0][2] * a.data[1][1] * a.data[2][0] * a.data[3][3]) + (a.data[0][1] * a.data[1][2] * a.data[2][0] * a.data[3][3]) +
+                 (a.data[0][2] * a.data[1][0] * a.data[2][1] * a.data[3][3]) - (a.data[0][0] * a.data[1][2] * a.data[2][1] * a.data[3][3]) -
+                 (a.data[0][1] * a.data[1][0] * a.data[2][2] * a.data[3][3]) + (a.data[0][0] * a.data[1][1] * a.data[2][2] * a.data[3][3]) );
     }
 
     Matrix4x4 inverse(const Matrix4x4 &a) {

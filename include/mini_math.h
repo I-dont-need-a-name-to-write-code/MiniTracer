@@ -38,6 +38,8 @@ namespace mini_math {
         friend Matrix4x4 operator+(const Matrix4x4 &a, const Matrix4x4 &b);
         friend Matrix4x4 operator-(const Matrix4x4 &a, const Matrix4x4 &b);
         friend Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b);
+        friend Matrix4x4 operator*(const Matrix4x4 &a, const float scaler);
+        friend Matrix4x4 operator*(const float scaler, const Matrix4x4 &a);
 
         Matrix4x4 &transpose();
         friend Matrix4x4 transpose(const Matrix4x4 &a);
