@@ -52,6 +52,26 @@ namespace mini_math {
         }
     }
 
+    Matrix4x4 &Matrix4x4::transpose() {
+        float temp;
+        for(uint8_t d = 0; d < 3; ++d) {
+            for(uint8_t i = (d + 1); i < 4; ++i) {
+                temp = this->data[d][i];
+                this->data[d][i] = this->data[i][d];
+                this->data[i][d] = temp;
+            }
+        }
+        return *this;
+    }
+
+    vec3 operator*(const Matrix4x4 &m, const vec3 &v) {
+        vec3 res;
+        res.x() = (m.data[0][0] * v.x()) + (m.data[0][1] * v.y()) + (m.data[0][2] * v.z()) + m.data[0][3];
+        res.y() = (m.data[1][0] * v.x()) + (m.data[1][1] * v.y()) + (m.data[1][2] * v.z()) + m.data[1][3];
+        res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];  
+        return res;
+    }
+
     Matrix4x4 operator+(const Matrix4x4 &a, const Matrix4x4 &b) {
         Matrix4x4 c;
         for(uint8_t i = 0; i < 4; ++i) {
@@ -85,12 +105,22 @@ namespace mini_math {
         return c;
     }
 
-    vec3 operator*(const Matrix4x4 &m, const vec3 &v) {
-        vec3 res;
-        res.x() = (m.data[0][0] * v.x()) + (m.data[0][1] * v.y()) + (m.data[0][2] * v.z()) + m.data[0][3];
-        res.y() = (m.data[1][0] * v.x()) + (m.data[1][1] * v.y()) + (m.data[1][2] * v.z()) + m.data[1][3];
-        res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];  
-        return res;
+    Matrix4x4 transpose(const Matrix4x4 &a) {
+        Matrix4x4 a_t;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) {
+                a_t.data[j][i] = a.data[i][j];   
+            }
+        }
+        return a_t;
+    }
+
+    float determinant(const Matrix4x4 &a) {
+           
+    }
+
+    Matrix4x4 inverse(const Matrix4x4 &a) {
+
     }
 
     std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other) {

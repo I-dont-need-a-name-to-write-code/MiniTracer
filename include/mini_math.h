@@ -34,10 +34,15 @@ namespace mini_math {
         const float &at(uint8_t i, uint8_t j) const;
        
         // math operations
+        friend vec3 operator*(const Matrix4x4 &m, const vec3 &v);
         friend Matrix4x4 operator+(const Matrix4x4 &a, const Matrix4x4 &b);
         friend Matrix4x4 operator-(const Matrix4x4 &a, const Matrix4x4 &b);
         friend Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b);
-        friend vec3 operator*(const Matrix4x4 &m, const vec3 &v);
+
+        Matrix4x4 &transpose();
+        friend Matrix4x4 transpose(const Matrix4x4 &a);
+        friend float determinant(const Matrix4x4 &a);
+        friend Matrix4x4 inverse(const Matrix4x4 &a);
 
         // debug
         friend std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other);

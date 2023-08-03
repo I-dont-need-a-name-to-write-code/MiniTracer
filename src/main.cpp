@@ -8,24 +8,14 @@ static uint32_t seed = time(NULL);
 
 int main(void) {
  
-    vec3 a = {
-        1, 
-        2, 
-        3
-    };
-
-    Matrix4x4 t_m (
-        1, 0, 0, 1,
-        0, 1, 0, 1,
-        0, 0, 1, 1,
-        0, 0, 0, 1
+    Matrix4x4 A (
+        1,  2,   3,  4,
+        5,  6,   7,  8,
+        9,  10, 11, 12,
+        13, 14, 15, 16
     );
 
-    vec3 t_a = t_m * a;
-
-    std::cout << a << std::endl;
-    std::cout << t_a << std::endl;
-
+    std::cout << transpose(A) << std::endl;
 
     return 0;
 }
