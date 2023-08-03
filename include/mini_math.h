@@ -15,6 +15,10 @@
 
 namespace mini_math {
 
+    class Matrix4x4;
+    class vec2;
+    class vec3;
+
     class Matrix4x4 {
     public:
         Matrix4x4();
@@ -33,6 +37,7 @@ namespace mini_math {
         friend Matrix4x4 operator+(const Matrix4x4 &a, const Matrix4x4 &b);
         friend Matrix4x4 operator-(const Matrix4x4 &a, const Matrix4x4 &b);
         friend Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b);
+        friend vec3 operator*(const Matrix4x4 &m, const vec3 &v);
 
         // debug
         friend std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other);
@@ -41,7 +46,8 @@ namespace mini_math {
         void copy(const Matrix4x4 &other);
             
     public:
-        static const Matrix4x4 Identity;
+        static const Matrix4x4 IDENTITY;
+        static const Matrix4x4 ZERO;
 
     private:
         float data[4][4];

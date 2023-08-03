@@ -8,22 +8,17 @@ static uint32_t seed = time(NULL);
 
 int main(void) {
  
-    vec3 a = {
-        1, 
-        2, 
-        3
+    vec3 = {
+        0, 1, 0
     };
 
-    Matrix4x4 t_m (
-        1, 0, 0, 1,
-        0, 1, 0, 1,
-        0, 0, 1, 1,
-        0, 0, 0, 1
+    Matrix4x4 tm (
+        
     );
 
-    vec3 t_a = t_m * a;
-
     std::cout << a << std::endl;
+
+    vec3 t_a =  * a;
     std::cout << t_a << std::endl;
 
 

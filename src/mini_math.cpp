@@ -3,15 +3,22 @@
 namespace mini_math {
 
     // MATRIX4x4 
-    const Matrix4x4 Matrix4x4::Identity = Matrix4x4(
+    const Matrix4x4 Matrix4x4::IDENTITY = Matrix4x4 (
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f
     );
 
+    const Matrix4x4 Matrix4x4::ZERO = Matrix4x4 ( 
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f
+    );
+
     Matrix4x4::Matrix4x4() {
-        this->copy(Matrix4x4::Identity);
+        this->copy(Matrix4x4::IDENTITY);
     }
 
     Matrix4x4::Matrix4x4(float m00, float m01, float m02, float m03,
@@ -76,6 +83,14 @@ namespace mini_math {
             }
         }
         return c;
+    }
+
+    vec3 operator*(const Matrix4x4 &m, const vec3 &v) {
+        vec3 res;
+        res.x() = (m.data[0][0] * v.x()) + (m.data[0][1] * v.y()) + (m.data[0][2] * v.z()) + m.data[0][3];
+        res.y() = (m.data[1][0] * v.x()) + (m.data[1][1] * v.y()) + (m.data[1][2] * v.z()) + m.data[1][3];
+        res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];  
+        return res;
     }
 
     std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other) {
