@@ -14,47 +14,54 @@
 #endif
 
 namespace mini_math {
-
-    class Matrix4x4;
+    
+    class matrix44;
     class vec2;
     class vec3;
+    
+    enum result_e { NONE = 0 , SOME = 1 };
+    template <typename T>
+    struct optional {
+        result_e type;
+        T result;
+    };
 
-    class Matrix4x4 {
+    class matrix44 {
     public:
-        Matrix4x4();
-        Matrix4x4(float m00, float m01, float m02, float m03,
-                  float m10, float m11, float m12, float m13,
-                  float m20, float m21, float m22, float m23,
-                  float m30, float m31, float m32, float m33);
-        Matrix4x4(const Matrix4x4 &other);
-        Matrix4x4 &operator=(const Matrix4x4 &other);
+        matrix44();
+        matrix44(float m00, float m01, float m02, float m03,
+                 float m10, float m11, float m12, float m13,
+                 float m20, float m21, float m22, float m23,
+                 float m30, float m31, float m32, float m33);
+        matrix44(const matrix44 &other);
+        matrix44 &operator=(const matrix44 &other);
     
         // getter and setter
         float &at(uint8_t i, uint8_t j);
         const float &at(uint8_t i, uint8_t j) const;
        
         // math operations
-        friend vec3 operator*(const Matrix4x4 &m, const vec3 &v);
-        friend Matrix4x4 operator+(const Matrix4x4 &a, const Matrix4x4 &b);
-        friend Matrix4x4 operator-(const Matrix4x4 &a, const Matrix4x4 &b);
-        friend Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b);
-        friend Matrix4x4 operator*(const Matrix4x4 &a, const float scaler);
-        friend Matrix4x4 operator*(const float scaler, const Matrix4x4 &a);
+        friend vec3 operator*(const matrix44 &m, const vec3 &v);
+        friend matrix44 operator+(const matrix44 &a, const matrix44 &b);
+        friend matrix44 operator-(const matrix44 &a, const matrix44 &b);
+        friend matrix44 operator*(const matrix44 &a, const matrix44 &b);
+        friend matrix44 operator*(const matrix44 &a, const float scaler);
+        friend matrix44 operator*(const float scaler, const matrix44 &a);
 
-        Matrix4x4 &transpose();
-        friend Matrix4x4 transpose(const Matrix4x4 &a);
-        friend float determinant(const Matrix4x4 &a);
-        friend Matrix4x4 inverse(const Matrix4x4 &a);
+        matrix44 &transpose();
+        friend matrix44 transpose(const matrix44 &a);
+        friend float determinant(const matrix44 &a);
+        friend optional<matrix44> inverse(const matrix44 &a);
 
         // debug
-        friend std::ostream &operator<<(std::ostream &out, const Matrix4x4 &other);
+        friend std::ostream &operator<<(std::ostream &out, const matrix44 &other);
 
     private:
-        void copy(const Matrix4x4 &other);
+        void copy(const matrix44 &other);
             
     public:
-        static const Matrix4x4 IDENTITY;
-        static const Matrix4x4 ZERO;
+        static const matrix44 IDENTITY;
+        static const matrix44 ZERO;
 
     private:
         float data[4][4];
