@@ -139,33 +139,70 @@ namespace mini_math {
     }
 
     float determinant(const matrix44 &a) {
-        return ( (a.data[0][3] * a.data[1][2] * a.data[2][1] * a.data[3][0]) - (a.data[0][2] * a.data[1][3] * a.data[2][1] * a.data[3][0]) -
-                 (a.data[0][3] * a.data[1][1] * a.data[2][2] * a.data[3][0]) + (a.data[0][1] * a.data[1][3] * a.data[2][2] * a.data[3][0]) +
-                 (a.data[0][2] * a.data[1][1] * a.data[2][3] * a.data[3][0]) - (a.data[0][1] * a.data[1][2] * a.data[2][3] * a.data[3][0]) -
-                 (a.data[0][3] * a.data[1][2] * a.data[2][0] * a.data[3][1]) + (a.data[0][2] * a.data[1][3] * a.data[2][0] * a.data[3][1]) +
-                 (a.data[0][3] * a.data[1][0] * a.data[2][2] * a.data[3][1]) - (a.data[0][0] * a.data[1][3] * a.data[2][2] * a.data[3][1]) -
-                 (a.data[0][2] * a.data[1][0] * a.data[2][3] * a.data[3][1]) + (a.data[0][0] * a.data[1][2] * a.data[2][3] * a.data[3][1]) +
-                 (a.data[0][3] * a.data[1][1] * a.data[2][0] * a.data[3][2]) - (a.data[0][1] * a.data[1][3] * a.data[2][0] * a.data[3][2]) -
-                 (a.data[0][3] * a.data[1][0] * a.data[2][1] * a.data[3][2]) + (a.data[0][0] * a.data[1][3] * a.data[2][1] * a.data[3][2]) +
-                 (a.data[0][1] * a.data[1][0] * a.data[2][3] * a.data[3][2]) - (a.data[0][0] * a.data[1][1] * a.data[2][3] * a.data[3][2]) -
-                 (a.data[0][2] * a.data[1][1] * a.data[2][0] * a.data[3][3]) + (a.data[0][1] * a.data[1][2] * a.data[2][0] * a.data[3][3]) +
-                 (a.data[0][2] * a.data[1][0] * a.data[2][1] * a.data[3][3]) - (a.data[0][0] * a.data[1][2] * a.data[2][1] * a.data[3][3]) -
-                 (a.data[0][1] * a.data[1][0] * a.data[2][2] * a.data[3][3]) + (a.data[0][0] * a.data[1][1] * a.data[2][2] * a.data[3][3]) );
+        float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
+        float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
+        float s2 = a.data[0][0] * a.data[1][3] - a.data[1][0] * a.data[0][3];
+        float s3 = a.data[0][1] * a.data[1][2] - a.data[1][1] * a.data[0][2];
+        float s4 = a.data[0][1] * a.data[1][3] - a.data[1][1] * a.data[0][3];
+        float s5 = a.data[0][2] * a.data[1][3] - a.data[1][2] * a.data[0][3];
+
+        float c5 = a.data[2][2] * a.data[3][3] - a.data[3][2] * a.data[2][3];
+        float c4 = a.data[2][1] * a.data[3][3] - a.data[3][1] * a.data[2][3];
+        float c3 = a.data[2][1] * a.data[3][2] - a.data[3][1] * a.data[2][2];
+        float c2 = a.data[2][0] * a.data[3][3] - a.data[3][0] * a.data[2][3];
+        float c1 = a.data[2][0] * a.data[3][2] - a.data[3][0] * a.data[2][2];
+        float c0 = a.data[2][0] * a.data[3][1] - a.data[3][0] * a.data[2][1];
+    
+        return (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
     }
 
     optional<matrix44> inverse(const matrix44 &a) {
-        optional<matrix44> res;
-        float d = determinant(a);
-        if(d == 0.0f) {
-            res.type = NONE;
-            return res;
-        }
-        
-        // TODO: calculate inverse //
+        optional<matrix44> r;
+        float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
+        float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
+        float s2 = a.data[0][0] * a.data[1][3] - a.data[1][0] * a.data[0][3];
+        float s3 = a.data[0][1] * a.data[1][2] - a.data[1][1] * a.data[0][2];
+        float s4 = a.data[0][1] * a.data[1][3] - a.data[1][1] * a.data[0][3];
+        float s5 = a.data[0][2] * a.data[1][3] - a.data[1][2] * a.data[0][3];
 
-        res.type = SOME;
-        res.result = matrix44::ZERO;
-        return res; 
+        float c5 = a.data[2][2] * a.data[3][3] - a.data[3][2] * a.data[2][3];
+        float c4 = a.data[2][1] * a.data[3][3] - a.data[3][1] * a.data[2][3];
+        float c3 = a.data[2][1] * a.data[3][2] - a.data[3][1] * a.data[2][2];
+        float c2 = a.data[2][0] * a.data[3][3] - a.data[3][0] * a.data[2][3];
+        float c1 = a.data[2][0] * a.data[3][2] - a.data[3][0] * a.data[2][2];
+        float c0 = a.data[2][0] * a.data[3][1] - a.data[3][0] * a.data[2][1];
+
+        float d = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
+        if(d == 0.0f) {
+            r.type = NONE;
+            return r;
+        }
+
+        matrix44 &m = r.result;
+        float inv_d = 1.0f / d;      
+
+        m.data[0][0] = ( a.data[1][1] * c5 - a.data[1][2] * c4 + a.data[1][3] * c3) * inv_d;
+        m.data[0][1] = (-a.data[0][1] * c5 + a.data[0][2] * c4 - a.data[0][3] * c3) * inv_d;
+        m.data[0][2] = ( a.data[3][1] * s5 - a.data[3][2] * s4 + a.data[3][3] * s3) * inv_d;
+        m.data[0][3] = (-a.data[2][1] * s5 + a.data[2][2] * s4 - a.data[2][3] * s3) * inv_d;
+                                                                       
+        m.data[1][0] = (-a.data[1][0] * c5 + a.data[1][2] * c2 - a.data[1][3] * c1) * inv_d;
+        m.data[1][1] = ( a.data[0][0] * c5 - a.data[0][2] * c2 + a.data[0][3] * c1) * inv_d;
+        m.data[1][2] = (-a.data[3][0] * s5 + a.data[3][2] * s2 - a.data[3][3] * s1) * inv_d;
+        m.data[1][3] = ( a.data[2][0] * s5 - a.data[2][2] * s2 + a.data[2][3] * s1) * inv_d;
+                                                                       
+        m.data[2][0] = ( a.data[1][0] * c4 - a.data[1][1] * c2 + a.data[1][3] * c0) * inv_d;
+        m.data[2][1] = (-a.data[0][0] * c4 + a.data[0][1] * c2 - a.data[0][3] * c0) * inv_d;
+        m.data[2][2] = ( a.data[3][0] * s4 - a.data[3][1] * s2 + a.data[3][3] * s0) * inv_d;
+        m.data[2][3] = (-a.data[2][0] * s4 + a.data[2][1] * s2 - a.data[2][3] * s0) * inv_d;
+                                                                       
+        m.data[3][0] = (-a.data[1][0] * c3 + a.data[1][1] * c1 - a.data[1][2] * c0) * inv_d;
+        m.data[3][1] = ( a.data[0][0] * c3 - a.data[0][1] * c1 + a.data[0][2] * c0) * inv_d;
+        m.data[3][2] = (-a.data[3][0] * s3 + a.data[3][1] * s1 - a.data[3][2] * s0) * inv_d;
+        m.data[3][3] = ( a.data[2][0] * s3 - a.data[2][1] * s1 + a.data[2][2] * s0) * inv_d;
+
+        r.type = SOME;
+        return r; 
     }
 
     std::ostream &operator<<(std::ostream &out, const matrix44 &other) {
