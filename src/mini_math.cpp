@@ -3,25 +3,25 @@
 namespace mini_math {
 
     // MATRIX44 
-    const matrix44 matrix44::IDENTITY = matrix44 (
+    const mat4x4 mat4x4::IDENTITY = mat4x4 (
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f
     );
 
-    const matrix44 matrix44::ZERO = matrix44 ( 
+    const mat4x4 mat4x4::ZERO = mat4x4 ( 
         0.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 0.0f
     );
 
-    matrix44::matrix44() {
-        this->copy(matrix44::IDENTITY);
+    mat4x4::mat4x4() {
+        this->copy(mat4x4::IDENTITY);
     }
 
-    matrix44::matrix44(float m00, float m01, float m02, float m03,
+    mat4x4::mat4x4(float m00, float m01, float m02, float m03,
                        float m10, float m11, float m12, float m13,
                        float m20, float m21, float m22, float m23,
                        float m30, float m31, float m32, float m33) 
@@ -32,27 +32,74 @@ namespace mini_math {
         this->data[3][0] = m30;  this->data[3][1] = m31; this->data[3][2] = m32; this->data[3][3] = m33;
     }
 
-    matrix44::matrix44(const matrix44 &other) {
+    mat4x4::mat4x4(const mat4x4 &other) {
         this->copy(other);
     }
 
-    matrix44 &matrix44::operator=(const matrix44 &other) {
+    mat4x4 &mat4x4::operator=(const mat4x4 &other) {
         if(this != &other) {
             this->copy(other);
         }
         return *this;
     }
 
-    float &matrix44::at(uint8_t i, uint8_t j) { return this->data[i][j]; }
-    const float &matrix44::at(uint8_t i, uint8_t j) const { return this->data[i][j]; }
+    float &mat4x4::at(uint8_t i, uint8_t j) { return this->data[i][j]; }
+    const float &mat4x4::at(uint8_t i, uint8_t j) const { return this->data[i][j]; }
     
-    void matrix44::copy(const matrix44 &other) {
+    void mat4x4::copy(const mat4x4 &other) {
         for(uint8_t i = 0; i < 16; ++i) {
            *((float*)&this->data + i) = *((float*)&other.data + i);
         }
     }
 
-    vec3 operator*(const matrix44 &m, const vec3 &v) {
+    mat4x4 operator+(const mat4x4 &a, const mat4x4 &b) {
+        mat4x4 c;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) { 
+                c.data[i][j] = a.data[i][j] + b.data[i][j];
+            }
+        }
+        return c;
+    }
+
+    mat4x4 operator-(const mat4x4 &a, const mat4x4 &b) {
+        mat4x4 c;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) { 
+                c.data[i][j] = a.data[i][j] - b.data[i][j];
+            }
+        }
+        return c;
+    }
+
+    mat4x4 operator*(const mat4x4 &a, const mat4x4 &b) {
+        mat4x4 c;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) { 
+                c.data[i][j] = 0;
+                for(uint8_t k = 0; k < 4; ++k) {
+                    c.data[i][j] += a.data[i][k] * b.data[k][j];
+                }
+            }
+        }
+        return c;
+    }
+
+    mat4x4 operator*(const mat4x4 &a, const float scaler) {
+        mat4x4 res;
+        for(uint8_t i = 0; i < 4; ++i) {
+            for(uint8_t j = 0; j < 4; ++j) {
+                res.data[i][j] = scaler * a.data[i][j];
+            }
+        }
+        return res;
+    }
+
+    mat4x4 operator*(const float scaler, const mat4x4 &a) {
+        return (a * scaler);
+    }
+
+    vec3 operator*(const mat4x4 &m, const vec3 &v) {
         vec3 res;
         res.x() = (m.data[0][0] * v.x()) + (m.data[0][1] * v.y()) + (m.data[0][2] * v.z()) + m.data[0][3];
         res.y() = (m.data[1][0] * v.x()) + (m.data[1][1] * v.y()) + (m.data[1][2] * v.z()) + m.data[1][3];
@@ -69,54 +116,7 @@ namespace mini_math {
         return res;
     }
 
-    matrix44 operator+(const matrix44 &a, const matrix44 &b) {
-        matrix44 c;
-        for(uint8_t i = 0; i < 4; ++i) {
-            for(uint8_t j = 0; j < 4; ++j) { 
-                c.data[i][j] = a.data[i][j] + b.data[i][j];
-            }
-        }
-        return c;
-    }
-
-    matrix44 operator-(const matrix44 &a, const matrix44 &b) {
-        matrix44 c;
-        for(uint8_t i = 0; i < 4; ++i) {
-            for(uint8_t j = 0; j < 4; ++j) { 
-                c.data[i][j] = a.data[i][j] - b.data[i][j];
-            }
-        }
-        return c;
-    }
-
-    matrix44 operator*(const matrix44 &a, const matrix44 &b) {
-        matrix44 c;
-        for(uint8_t i = 0; i < 4; ++i) {
-            for(uint8_t j = 0; j < 4; ++j) { 
-                c.data[i][j] = 0;
-                for(uint8_t k = 0; k < 4; ++k) {
-                    c.data[i][j] += a.data[i][k] * b.data[k][j];
-                }
-            }
-        }
-        return c;
-    }
-
-    matrix44 operator*(const matrix44 &a, const float scaler) {
-        matrix44 res;
-        for(uint8_t i = 0; i < 4; ++i) {
-            for(uint8_t j = 0; j < 4; ++j) {
-                res.data[i][j] = scaler * a.data[i][j];
-            }
-        }
-        return res;
-    }
-
-    matrix44 operator*(const float scaler, const matrix44 &a) {
-        return (a * scaler);
-    }
-
-    matrix44 &matrix44::transpose() {
+    mat4x4 &mat4x4::transpose() {
         float temp;
         for(uint8_t d = 0; d < 3; ++d) {
             for(uint8_t i = (d + 1); i < 4; ++i) {
@@ -128,8 +128,8 @@ namespace mini_math {
         return *this;
     }
 
-    matrix44 transpose(const matrix44 &a) {
-        matrix44 a_t;
+    mat4x4 transpose(const mat4x4 &a) {
+        mat4x4 a_t;
         for(uint8_t i = 0; i < 4; ++i) {
             for(uint8_t j = 0; j < 4; ++j) {
                 a_t.data[j][i] = a.data[i][j];   
@@ -138,7 +138,7 @@ namespace mini_math {
         return a_t;
     }
 
-    float determinant(const matrix44 &a) {
+    float determinant(const mat4x4 &a) {
         float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
         float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
         float s2 = a.data[0][0] * a.data[1][3] - a.data[1][0] * a.data[0][3];
@@ -156,8 +156,8 @@ namespace mini_math {
         return (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
     }
 
-    optional<matrix44> inverse(const matrix44 &a) {
-        optional<matrix44> r;
+    optional<mat4x4> inverse(const mat4x4 &a) {
+        optional<mat4x4> r;
         float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
         float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
         float s2 = a.data[0][0] * a.data[1][3] - a.data[1][0] * a.data[0][3];
@@ -178,7 +178,7 @@ namespace mini_math {
             return r;
         }
 
-        matrix44 &m = r.result;
+        mat4x4 &m = r.result;
         float inv_d = 1.0f / d;      
 
         m.data[0][0] = ( a.data[1][1] * c5 - a.data[1][2] * c4 + a.data[1][3] * c3) * inv_d;
@@ -205,7 +205,7 @@ namespace mini_math {
         return r; 
     }
 
-    std::ostream &operator<<(std::ostream &out, const matrix44 &other) {
+    std::ostream &operator<<(std::ostream &out, const mat4x4 &other) {
         out << "(_DEBUG_) MATRIX4x4 -> [\n";
         for(uint8_t i = 0; i < 4; ++i) {
             out << "  [";

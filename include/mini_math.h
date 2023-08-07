@@ -15,7 +15,7 @@
 
 namespace mini_math {
     
-    class matrix44;
+    class mat4x4;
     class vec2;
     class vec3;
     
@@ -26,42 +26,42 @@ namespace mini_math {
         T result;
     };
 
-    class matrix44 {
+    class mat4x4 {
     public:
-        matrix44();
-        matrix44(float m00, float m01, float m02, float m03,
+        mat4x4();
+        mat4x4(float m00, float m01, float m02, float m03,
                  float m10, float m11, float m12, float m13,
                  float m20, float m21, float m22, float m23,
                  float m30, float m31, float m32, float m33);
-        matrix44(const matrix44 &other);
-        matrix44 &operator=(const matrix44 &other);
+        mat4x4(const mat4x4 &other);
+        mat4x4 &operator=(const mat4x4 &other);
     
         // getter and setter
         float &at(uint8_t i, uint8_t j);
         const float &at(uint8_t i, uint8_t j) const;
        
         // math operations
-        friend vec3 operator*(const matrix44 &m, const vec3 &v);
-        friend matrix44 operator+(const matrix44 &a, const matrix44 &b);
-        friend matrix44 operator-(const matrix44 &a, const matrix44 &b);
-        friend matrix44 operator*(const matrix44 &a, const matrix44 &b);
-        friend matrix44 operator*(const matrix44 &a, const float scaler);
-        friend matrix44 operator*(const float scaler, const matrix44 &a);
+        friend mat4x4 operator+(const mat4x4 &a, const mat4x4 &b);
+        friend mat4x4 operator-(const mat4x4 &a, const mat4x4 &b);
+        friend mat4x4 operator*(const mat4x4 &a, const mat4x4 &b);
+        friend mat4x4 operator*(const mat4x4 &a, const float scaler);
+        friend mat4x4 operator*(const float scaler, const mat4x4 &a);
+        friend vec3 operator*(const mat4x4 &m, const vec3 &v);
 
-        matrix44 &transpose();
-        friend matrix44 transpose(const matrix44 &a);
-        friend float determinant(const matrix44 &a);
-        friend optional<matrix44> inverse(const matrix44 &a);
+        mat4x4 &transpose();
+        friend mat4x4 transpose(const mat4x4 &a);
+        friend float determinant(const mat4x4 &a);
+        friend optional<mat4x4> inverse(const mat4x4 &a);
 
         // debug
-        friend std::ostream &operator<<(std::ostream &out, const matrix44 &other);
+        friend std::ostream &operator<<(std::ostream &out, const mat4x4 &other);
 
     private:
-        void copy(const matrix44 &other);
+        void copy(const mat4x4 &other);
             
     public:
-        static const matrix44 IDENTITY;
-        static const matrix44 ZERO;
+        static const mat4x4 IDENTITY;
+        static const mat4x4 ZERO;
 
     private:
         float data[4][4];
@@ -151,7 +151,7 @@ namespace mini_math {
         friend float dot(const vec3 &a, const vec3 &b);
         friend vec3 cross(const vec3 &a, const vec3 &b);
         friend float angle_between(const vec3 &a, const vec3 &b);
-        friend vec3 reflect(const vec3 &incident_ray, const vec3 &normal);
+        friend vec3 reflect(const vec3 &incident_ray, const vec3 &normal); 
 
         // debug
         friend std::ostream &operator<<(std::ostream& out, const vec3& vec);
