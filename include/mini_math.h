@@ -2,7 +2,7 @@
 #define MINI_MATH_H
 
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <limits>
 
 #ifndef M_PI
