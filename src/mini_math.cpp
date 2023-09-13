@@ -52,6 +52,23 @@ namespace mini_math {
         }
     }
 
+    vec3 operator*(const mat4x4 &m, const vec3 &v) {
+        vec3 res;
+        res.x() = (m.data[0][0] * v.x()) + (m.data[0][1] * v.y()) + (m.data[0][2] * v.z()) + m.data[0][3];
+        res.y() = (m.data[1][0] * v.x()) + (m.data[1][1] * v.y()) + (m.data[1][2] * v.z()) + m.data[1][3];
+        res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];
+        float w = (m.data[3][0] * v.x()) + (m.data[3][1] * v.y()) + (m.data[3][2] * v.z()) + m.data[3][3];
+        
+        if((w != 1.0f) && (w != 0.0f) && (w != -0.0f)) {
+            float inv_w = 1.0f / w;
+            res.x() *= inv_w;
+            res.y() *= inv_w;
+            res.z() *= inv_w;
+        }
+
+        return res;
+    }
+
     mat4x4 operator+(const mat4x4 &a, const mat4x4 &b) {
         mat4x4 c;
         for(uint8_t i = 0; i < 4; ++i) {
@@ -99,21 +116,19 @@ namespace mini_math {
         return (a * scaler);
     }
 
-    vec3 operator*(const mat4x4 &m, const vec3 &v) {
-        vec3 res;
-        res.x() = (m.data[0][0] * v.x()) + (m.data[0][1] * v.y()) + (m.data[0][2] * v.z()) + m.data[0][3];
-        res.y() = (m.data[1][0] * v.x()) + (m.data[1][1] * v.y()) + (m.data[1][2] * v.z()) + m.data[1][3];
-        res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];
-        float w = (m.data[3][0] * v.x()) + (m.data[3][1] * v.y()) + (m.data[3][2] * v.z()) + m.data[3][3];
-        
-        if((w != 1.0f) && (w != 0.0f) && (w != -0.0f)) {
-            float inv_w = 1.0f / w;
-            res.x() *= inv_w;
-            res.y() *= inv_w;
-            res.z() *= inv_w;
-        }
+    mat4x4 matrix_rotateX(const float angle) {
+        (void)angle;
+        return mat4x4::ZERO;
+    }
 
-        return res;
+    mat4x4 matrix_rotateY(const float angle) {
+        (void)angle;
+        return mat4x4::ZERO;
+    }
+
+    mat4x4 matrix_rotateZ(const float angle) {
+        (void)angle;
+        return mat4x4::ZERO;
     }
 
     mat4x4 &mat4x4::transpose() {

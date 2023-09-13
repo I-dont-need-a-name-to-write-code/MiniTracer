@@ -41,12 +41,15 @@ namespace mini_math {
         const float &at(uint8_t i, uint8_t j) const;
        
         // math operations
+        friend vec3 operator*(const mat4x4 &m, const vec3 &v);
         friend mat4x4 operator+(const mat4x4 &a, const mat4x4 &b);
         friend mat4x4 operator-(const mat4x4 &a, const mat4x4 &b);
         friend mat4x4 operator*(const mat4x4 &a, const mat4x4 &b);
         friend mat4x4 operator*(const mat4x4 &a, const float scaler);
         friend mat4x4 operator*(const float scaler, const mat4x4 &a);
-        friend vec3 operator*(const mat4x4 &m, const vec3 &v);
+        friend mat4x4 matrix_rotateX(const float angle);
+        friend mat4x4 matrix_rotateY(const float angle);
+        friend mat4x4 matrix_rotateZ(const float angle);
 
         mat4x4 &transpose();
         friend mat4x4 transpose(const mat4x4 &a);
