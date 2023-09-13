@@ -17,9 +17,7 @@ namespace mmath {
         0.0f, 0.0f, 0.0f, 0.0f
     );
 
-    mat4x4::mat4x4() {
-        this->copy(mat4x4::IDENTITY);
-    }
+    mat4x4::mat4x4() {}
 
     mat4x4::mat4x4(float m00, float m01, float m02, float m03,
                    float m10, float m11, float m12, float m13,
@@ -59,7 +57,7 @@ namespace mmath {
         res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];
         float w = (m.data[3][0] * v.x()) + (m.data[3][1] * v.y()) + (m.data[3][2] * v.z()) + m.data[3][3];
         
-        if((w != 1.0f) && (w != 0.0f) && (w != -0.0f)) {
+        if((w != 0.0f) && (w != 1.0f)) {
             float inv_w = 1.0f / w;
             res.x() *= inv_w;
             res.y() *= inv_w;
@@ -129,13 +127,27 @@ namespace mmath {
     }
 
     mat4x4 mat4x4::rotateY(const float angle) {
-        (void)angle;
-        return mat4x4::ZERO;
+        const float a = sinf(angle);
+        const float b = cosf(angle);
+        mat4x4 res = mat4x4 (
+            b   , 0.0f, -a   , 0.0f,
+            0.0f, 1.0f,  0.0f, 0.0f,
+            a   , 0.0f,  b   , 0.0f,
+            0.0f, 0.0f,  0.0f, 1.0f
+        );
+        return res;
     }
 
     mat4x4 mat4x4::rotateZ(const float angle) {
-        (void)angle;
-        return mat4x4::ZERO;
+        const float a = sinf(angle);
+        const float b = cosf(angle);
+        mat4x4 res = mat4x4 (
+             b   , a   , 0.0f, 0.0f,
+            -a   , b   , 0.0f, 0.0f,
+             0.0f, 0.0f, 1.0f, 0.0f,
+             0.0f, 0.0f, 0.0f, 1.0f
+        );
+        return res;
     }
 
     mat4x4 &mat4x4::transpose() {
