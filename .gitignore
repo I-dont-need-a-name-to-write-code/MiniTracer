@@ -37,3 +37,6 @@
 # Texts
 *.txt
 *.log
+
+#PPM
+*.ppm

@@ -1,4 +1,4 @@
-#include "../include/mini_math.h"
+#include "../include/mmath.h"
 
 namespace mmath {
 
@@ -563,16 +563,16 @@ namespace mmath {
         return (word >> 22u) ^ word;
     }
     
-    float random_float(uint32_t &seed) {
+    float randf(uint32_t &seed, float min, float max) {
         seed = pcg_hash(seed);
         constexpr uint32_t UINT32_T_MAX = std::numeric_limits<uint32_t>::max();
-        return ((float)seed / (float)UINT32_T_MAX);  
+        float x = ((float)seed / (float)UINT32_T_MAX);
+        return min + (x * (max - min));
     }
 
     vec2 random_vec2(uint32_t &seed, const float min, const float max) {        
-        float range = (max - min);
-        return vec2( (min + random_float(seed) * range),
-                     (min + random_float(seed) * range) );
+        return vec2( randf(seed, min, max),
+                     randf(seed, min, max) );
     }
 
     vec2 random_in_unit_circle(uint32_t &seed) {
@@ -590,10 +590,9 @@ namespace mmath {
     }
 
     vec3 random_vec3(uint32_t &seed, const float min, const float max) { 
-        float range = (max - min);
-        return vec3( (min + random_float(seed) * range),
-                     (min + random_float(seed) * range), 
-                     (min + random_float(seed) * range) );
+        return vec3( randf(seed, min, max),
+                     randf(seed, min, max), 
+                     randf(seed, min, max) );
     }
 
     vec3 random_in_unit_sphere(uint32_t &seed) {

@@ -193,8 +193,9 @@ namespace mmath {
     float clampf(const float x, const float min, const float max);
     float rad_to_deg(const float radians);
     float deg_to_rad(const float degrees);
+
     uint32_t pcg_hash(uint32_t input); 
-    float random_float(uint32_t &seed);
+    float randf(uint32_t &seed, float min = 0.0f, float max = 1.0f);
 
     vec2 random_vec2(uint32_t &seed, const float min = -1.0f, const float max = 1.0f);
     vec2 random_in_unit_circle(uint32_t &seed);
