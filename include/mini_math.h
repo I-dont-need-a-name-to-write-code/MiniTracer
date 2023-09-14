@@ -13,16 +13,16 @@
     #define M_SQRT sqrtf
 #endif
 
-namespace mini_math {
+namespace mmath {
     
     class mat4x4;
     class vec2;
     class vec3;
     
-    enum result_e { NONE = 0 , SOME = 1 };
+    enum class result_type { NONE = 0 , SOME = 1 };
     template <typename T>
     struct optional {
-        result_e type;
+        result_type type;
         T result;
     };
 
@@ -30,9 +30,9 @@ namespace mini_math {
     public:
         mat4x4();
         mat4x4(float m00, float m01, float m02, float m03,
-                 float m10, float m11, float m12, float m13,
-                 float m20, float m21, float m22, float m23,
-                 float m30, float m31, float m32, float m33);
+               float m10, float m11, float m12, float m13,
+               float m20, float m21, float m22, float m23,
+               float m30, float m31, float m32, float m33);
         mat4x4(const mat4x4 &other);
         mat4x4 &operator=(const mat4x4 &other);
     
@@ -41,20 +41,21 @@ namespace mini_math {
         const float &at(uint8_t i, uint8_t j) const;
        
         // math operations
-        friend vec3 operator*(const mat4x4 &m, const vec3 &v);
+        friend vec3   operator*(const mat4x4 &m, const vec3 &v);
         friend mat4x4 operator+(const mat4x4 &a, const mat4x4 &b);
         friend mat4x4 operator-(const mat4x4 &a, const mat4x4 &b);
         friend mat4x4 operator*(const mat4x4 &a, const mat4x4 &b);
         friend mat4x4 operator*(const mat4x4 &a, const float scaler);
         friend mat4x4 operator*(const float scaler, const mat4x4 &a);
-        friend mat4x4 matrix_rotateX(const float angle);
-        friend mat4x4 matrix_rotateY(const float angle);
-        friend mat4x4 matrix_rotateZ(const float angle);
+        
+        static mat4x4 rotateX(const float angle);
+        static mat4x4 rotateY(const float angle);
+        static mat4x4 rotateZ(const float angle);
 
         mat4x4 &transpose();
-        friend mat4x4 transpose(const mat4x4 &a);
-        friend float determinant(const mat4x4 &a);
-        friend optional<mat4x4> inverse(const mat4x4 &a);
+        static mat4x4 transpose(const mat4x4 &a); 
+        static float  determinant(const mat4x4 &a);
+        static optional<mat4x4> inverse(const mat4x4 &a);
 
         // debug
         friend std::ostream &operator<<(std::ostream &out, const mat4x4 &other);
@@ -84,9 +85,9 @@ namespace mini_math {
         const float &y() const;
 
         // math operations
-        friend vec2 lerp(const vec2 &a, const vec2 &b, const float t);
-        friend vec2 clamp(const vec2 &a, const vec2 &min, const vec2 &max);
-        friend vec2 clamp(const vec2 &a, const float min, const float max);
+        static vec2 lerp(const vec2 &a, const vec2 &b, const float t);
+        static vec2 clamp(const vec2 &a, const vec2 &min, const vec2 &max);
+        static vec2 clamp(const vec2 &a, const float min, const float max);
 
         friend vec2 operator-(const vec2 &a);
         friend vec2 operator+(const vec2 &a, const vec2& b);
@@ -99,13 +100,13 @@ namespace mini_math {
    
         float length_squared() const;
         float length() const;
-        friend vec2 normalize(const vec2 &a);
-        friend float get_distance_squared(const vec2 &a, const vec2 &b);
-        friend float get_distance(const vec2 &a, const vec2 &b);
-        friend float dot(const vec2 &a, const vec2 &b);
-        friend float cross(const vec2 &a, const vec2 &b);
-        friend float angle_between(const vec2 &a, const vec2 &b);
-        friend vec2 reflect(const vec2 &incident_ray, const vec2 &normal);
+        static vec2  normalize(const vec2 &a);
+        static float get_distance_squared(const vec2 &a, const vec2 &b);
+        static float get_distance(const vec2 &a, const vec2 &b);
+        static float dot(const vec2 &a, const vec2 &b);
+        static float cross(const vec2 &a, const vec2 &b);
+        static float angle_between(const vec2 &a, const vec2 &b);
+        static vec2  reflect(const vec2 &incident_ray, const vec2 &normal);
 
         // debug
         friend std::ostream &operator<<(std::ostream& out, const vec2& vec);
@@ -133,9 +134,9 @@ namespace mini_math {
         const float &z() const;
        
         // math operations
-        friend vec3 lerp(const vec3 &a, const vec3 &b, const float t);
-        friend vec3 clamp(const vec3 &a, const vec3 &min, const vec3 &max);
-        friend vec3 clamp(const vec3 &a, const float min, const float max);
+        static vec3 lerp(const vec3 &a, const vec3 &b, const float t);
+        static vec3 clamp(const vec3 &a, const vec3 &min, const vec3 &max);
+        static vec3 clamp(const vec3 &a, const float min, const float max);
         
         friend vec3 operator-(const vec3 &a);
         friend vec3 operator+(const vec3 &a, const vec3& b);
@@ -148,13 +149,13 @@ namespace mini_math {
    
         float length_squared() const;
         float length() const;
-        friend vec3 normalize(const vec3 &a);
-        friend float get_distance_squared(const vec3 &a, const vec3 &b);
-        friend float get_distance(const vec3 &a, const vec3 &b);
-        friend float dot(const vec3 &a, const vec3 &b);
-        friend vec3 cross(const vec3 &a, const vec3 &b);
-        friend float angle_between(const vec3 &a, const vec3 &b);
-        friend vec3 reflect(const vec3 &incident_ray, const vec3 &normal); 
+        static vec3 normalize(const vec3 &a);
+        static float get_distance_squared(const vec3 &a, const vec3 &b);
+        static float get_distance(const vec3 &a, const vec3 &b);
+        static float dot(const vec3 &a, const vec3 &b);
+        static vec3 cross(const vec3 &a, const vec3 &b);
+        static float angle_between(const vec3 &a, const vec3 &b);
+        static vec3 reflect(const vec3 &incident_ray, const vec3 &normal); 
 
         // debug
         friend std::ostream &operator<<(std::ostream& out, const vec3& vec);
@@ -188,8 +189,8 @@ namespace mini_math {
     };
      
     // general math functions
-    float lerp(const float a, const float b, const float t);
-    float clamp(const float x, const float min, const float max);
+    float lerpf(const float a, const float b, const float t);
+    float clampf(const float x, const float min, const float max);
     float rad_to_deg(const float radians);
     float deg_to_rad(const float degrees);
     uint32_t pcg_hash(uint32_t input); 

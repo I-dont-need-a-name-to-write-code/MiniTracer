@@ -1,6 +1,6 @@
 #include "../include/mini_math.h"
 
-namespace mini_math {
+namespace mmath {
 
     // MATRIX44 
     const mat4x4 mat4x4::IDENTITY = mat4x4 (
@@ -22,9 +22,9 @@ namespace mini_math {
     }
 
     mat4x4::mat4x4(float m00, float m01, float m02, float m03,
-                       float m10, float m11, float m12, float m13,
-                       float m20, float m21, float m22, float m23,
-                       float m30, float m31, float m32, float m33) 
+                   float m10, float m11, float m12, float m13,
+                   float m20, float m21, float m22, float m23,
+                   float m30, float m31, float m32, float m33) 
     {
         this->data[0][0] = m00;  this->data[0][1] = m01; this->data[0][2] = m02; this->data[0][3] = m03;
         this->data[1][0] = m10;  this->data[1][1] = m11; this->data[1][2] = m12; this->data[1][3] = m13;
@@ -116,17 +116,24 @@ namespace mini_math {
         return (a * scaler);
     }
 
-    mat4x4 matrix_rotateX(const float angle) {
+    mat4x4 mat4x4::rotateX(const float angle) {
+        const float a = sinf(angle);
+        const float b = cosf(angle);
+        mat4x4 res = mat4x4 (
+            1.0f,  0.0f, 0.0f, 0.0f,
+            0.0f,  b   , a   , 0.0f,
+            0.0f, -a   , b   , 0.0f,
+            0.0f,  0.0f, 0.0f, 1.0f
+        );
+        return res;
+    }
+
+    mat4x4 mat4x4::rotateY(const float angle) {
         (void)angle;
         return mat4x4::ZERO;
     }
 
-    mat4x4 matrix_rotateY(const float angle) {
-        (void)angle;
-        return mat4x4::ZERO;
-    }
-
-    mat4x4 matrix_rotateZ(const float angle) {
+    mat4x4 mat4x4::rotateZ(const float angle) {
         (void)angle;
         return mat4x4::ZERO;
     }
@@ -143,7 +150,7 @@ namespace mini_math {
         return *this;
     }
 
-    mat4x4 transpose(const mat4x4 &a) {
+    mat4x4 mat4x4::transpose(const mat4x4 &a) {
         mat4x4 a_t;
         for(uint8_t i = 0; i < 4; ++i) {
             for(uint8_t j = 0; j < 4; ++j) {
@@ -153,7 +160,7 @@ namespace mini_math {
         return a_t;
     }
 
-    float determinant(const mat4x4 &a) {
+    float mat4x4::determinant(const mat4x4 &a) {
         float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
         float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
         float s2 = a.data[0][0] * a.data[1][3] - a.data[1][0] * a.data[0][3];
@@ -171,7 +178,7 @@ namespace mini_math {
         return (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
     }
 
-    optional<mat4x4> inverse(const mat4x4 &a) {
+    optional<mat4x4> mat4x4::inverse(const mat4x4 &a) {
         optional<mat4x4> r;
         float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
         float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
@@ -189,7 +196,7 @@ namespace mini_math {
 
         float d = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
         if(d == 0.0f) {
-            r.type = NONE;
+            r.type = result_type::NONE;
             return r;
         }
 
@@ -216,7 +223,7 @@ namespace mini_math {
         m.data[3][2] = (-a.data[3][0] * s3 + a.data[3][1] * s1 - a.data[3][2] * s0) * inv_d;
         m.data[3][3] = ( a.data[2][0] * s3 - a.data[2][1] * s1 + a.data[2][2] * s0) * inv_d;
 
-        r.type = SOME;
+        r.type = result_type::SOME;
         return r; 
     }
 
@@ -259,18 +266,18 @@ namespace mini_math {
     const float &vec2::x() const { return this->v[0]; }
     const float &vec2::y() const { return this->v[1]; }
     
-    vec2 lerp(const vec2 &a, const vec2 &b, const float t) {
+    vec2 vec2::lerp(const vec2 &a, const vec2 &b, const float t) {
         return (a + (b - a) * t);
     }
 
-    vec2 clamp(const vec2 &a, const vec2 &min, const vec2 &max) {
-        return vec2( clamp(a.v[0], min.v[0], max.v[0]),
-                     clamp(a.v[1], min.v[1], max.v[1]) );
+    vec2 vec2::clamp(const vec2 &a, const vec2 &min, const vec2 &max) {
+        return vec2( clampf(a.v[0], min.v[0], max.v[0]),
+                     clampf(a.v[1], min.v[1], max.v[1]) );
     }
 
-    vec2 clamp(const vec2 &a, const float min, const float max) {        
-        return vec2( clamp(a.v[0], min, max),
-                     clamp(a.v[1], min, max) );
+    vec2 vec2::clamp(const vec2 &a, const float min, const float max) {        
+        return vec2( clampf(a.v[0], min, max),
+                     clampf(a.v[1], min, max) );
     }
     
     vec2 operator-(const vec2 &a) {
@@ -319,33 +326,33 @@ namespace mini_math {
         return M_SQRT(this->length_squared());
     }
 
-    vec2 normalize(const vec2 &a) {
+    vec2 vec2::normalize(const vec2 &a) {
         return (a / a.length());
     }
 
-    float get_distance_squared(const vec2 &a, const vec2 &b) {
+    float vec2::get_distance_squared(const vec2 &a, const vec2 &b) {
         return (b - a).length_squared();
     }
 
-    float get_distance(const vec2 &a, const vec2 &b) {
+    float vec2::get_distance(const vec2 &a, const vec2 &b) {
         return M_SQRT(get_distance_squared(a, b));
     }
 
-    float dot(const vec2 &a, const vec2 &b) {
+    float vec2::dot(const vec2 &a, const vec2 &b) {
         return ( (a.v[0] * b.v[0]) +
                  (a.v[1] * b.v[1]) );
     }
 
-    float cross(const vec2 &a, const vec2 &b) {
+    float vec2::cross(const vec2 &a, const vec2 &b) {
         return ( (a.v[0] * b.v[1]) - 
                  (a.v[1] * b.v[0]) );
     }
 
-    float angle_between(const vec2 &a, const vec2 &b) {
+    float vec2::angle_between(const vec2 &a, const vec2 &b) {
         return acosf(dot(a, b) / M_SQRT(a.length_squared() * b.length_squared()));
     }
 
-    vec2 reflect(const vec2 &incident_ray, const vec2 &normal) {
+    vec2 vec2::reflect(const vec2 &incident_ray, const vec2 &normal) {
         return incident_ray - (2 * dot(incident_ray, normal) * normal);
     }
     
@@ -384,20 +391,20 @@ namespace mini_math {
     const float &vec3::y() const { return this->v[1]; } 
     const float &vec3::z() const { return this->v[2]; }     
 
-    vec3 lerp(const vec3 &a, const vec3 &b, const float t) {
+    vec3 vec3::lerp(const vec3 &a, const vec3 &b, const float t) {
         return (a + (b - a) * t);
     }
 
-    vec3 clamp(const vec3 &a, const vec3 &min, const vec3 &max) {
-        return vec3( clamp(a.v[0], min.v[0], max.v[0]),
-                     clamp(a.v[1], min.v[1], max.v[1]), 
-                     clamp(a.v[2], min.v[2], max.v[2]) );
+    vec3 vec3::clamp(const vec3 &a, const vec3 &min, const vec3 &max) {
+        return vec3( clampf(a.v[0], min.v[0], max.v[0]),
+                     clampf(a.v[1], min.v[1], max.v[1]), 
+                     clampf(a.v[2], min.v[2], max.v[2]) );
     }
 
-    vec3 clamp(const vec3 &a, const float min, const float max) {
-        return vec3( clamp(a.v[0], min, max),
-                     clamp(a.v[1], min, max), 
-                     clamp(a.v[2], min, max) );
+    vec3 vec3::clamp(const vec3 &a, const float min, const float max) {
+        return vec3( clampf(a.v[0], min, max),
+                     clampf(a.v[1], min, max), 
+                     clampf(a.v[2], min, max) );
     }
 
     vec3 operator-(const vec3 &a) {
@@ -452,35 +459,35 @@ namespace mini_math {
         return M_SQRT(this->length_squared());
     }
 
-    vec3 normalize(const vec3 &a) {
+    vec3 vec3::normalize(const vec3 &a) {
         return (a / a.length());
     }
 
-    float get_distance_squared(const vec3 &a, const vec3 &b) {
+    float vec3::get_distance_squared(const vec3 &a, const vec3 &b) {
         return (b - a).length_squared();
     }
 
-    float get_distance(const vec3 &a, const vec3 &b) {
+    float vec3::get_distance(const vec3 &a, const vec3 &b) {
         return M_SQRT(get_distance_squared(a, b));
     }
     
-    float dot(const vec3 &a, const vec3 &b) {
+    float vec3::dot(const vec3 &a, const vec3 &b) {
         return ( (a.v[0] * b.v[0]) +
                  (a.v[1] * b.v[1]) +
                  (a.v[2] * b.v[2]) );
     }
 
-    vec3 cross(const vec3 &a, const vec3 &b) {
+    vec3 vec3::cross(const vec3 &a, const vec3 &b) {
         return vec3( (a.v[1] * b.v[2] - a.v[2] * b.v[1]),
                      (a.v[2] * b.v[0] - a.v[0] * b.v[2]),
                      (a.v[0] * b.v[1] - a.v[1] * b.v[0]) );
     }
 
-    float angle_between(const vec3 &a, const vec3 &b) {
+    float vec3::angle_between(const vec3 &a, const vec3 &b) {
         return acosf(dot(a, b) / M_SQRT(a.length_squared() * b.length_squared()));
     }
 
-    vec3 reflect(const vec3 &incident_ray, const vec3 &normal) {
+    vec3 vec3::reflect(const vec3 &incident_ray, const vec3 &normal) {
         return incident_ray - (2 * dot(incident_ray, normal) * normal);
     }
 
@@ -520,11 +527,11 @@ namespace mini_math {
 
     // general math functions
     
-    float lerp(const float a, const float b, const float t) {
+    float lerpf(const float a, const float b, const float t) {
         return (a + (b - a) * t);
     }
 
-    float clamp(const float x, const float min, const float max) {
+    float clampf(const float x, const float min, const float max) {
         if(x < min) return min;
         if(x > max) return max;
         return x;
@@ -566,7 +573,7 @@ namespace mini_math {
 
     vec2 random_in_unit_semicircle(uint32_t &seed, const vec2 &normal) {
         vec2 r = random_in_unit_circle(seed);
-        if(dot(r, normal) < 0.0f) return -r;
+        if(vec2::dot(r, normal) < 0.0f) return -r;
         return r;
     }
 
@@ -587,7 +594,7 @@ namespace mini_math {
 
     vec3 random_in_unit_hemisphere(uint32_t &seed, const vec3 &normal) {
         vec3 r = random_in_unit_sphere(seed);
-        if(dot(normal, r) < 0.0f) return -r;
+        if(vec3::dot(normal, r) < 0.0f) return -r;
         return r;
     }
 
