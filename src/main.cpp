@@ -5,12 +5,17 @@
 
 int main(void) {
 
-    uint32_t width  = 1280;
-    uint32_t height = 720;
+    const uint32_t width  = 640;
+    const uint32_t height = 480;
+    const point3 cam_origin = point3(0, 0, 0);
+    const vec3 cam_look_dir = vec3(0, 0, 1); 
+    const float vfov = deg_to_rad(90);
     
-    MiniTracer mt(width, height);
+    MiniTracer mt(width, height, 
+                  cam_origin, cam_look_dir, vfov);
     mt.render();
     mt.save_as_ppm("./render/image.ppm");
+    
 
     return 0;
 }

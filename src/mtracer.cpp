@@ -1,17 +1,27 @@
 #include "../include/mtracer.h"
 
 void MiniTracer::per_pixel(color3 &fragColor, const vec2 &fragCoord) {
-    float r = fragCoord.x() / this->width;
-    float g = fragCoord.y() / this->height;
-    float b = 0.5;
-    fragColor = color3(r, g, b);
+    float u = fragCoord.x() / (this->width  - 1); // [0, 1]
+    float v = fragCoord.y() / (this->height - 1); // [0, 1]
+
+    float su = (u * 2.0f) - 1.0f;          // [-1, 1]
+    float sv = ((1.0f - v) * 2.0f) - 1.0f; // [1, -1]
+    ray r = camera.get_ray(su, sv);
+
+    float dy = r.dir().y();
+    float t = (dy + 1.0f) * 0.5f;
+
+    fragColor = vec3::lerp(color3(1, 1, 1), color3(0.5, 0.7, 1.0), t);
 }
 
-MiniTracer::MiniTracer(uint32_t width, uint32_t height) {
+MiniTracer::MiniTracer(uint32_t width, uint32_t height, 
+                       const point3 &cam_o, const vec3 &cam_look_dir, float vfov) 
+{
     this->width  = width;
     this->height = height;
     this->img_buffer   = new color3[width * height];
     this->aspect_ratio = (float)width / (float)height;
+    this->camera = Camera(cam_o, cam_look_dir, vfov, this->aspect_ratio);
 }
 
 void MiniTracer::render() {
