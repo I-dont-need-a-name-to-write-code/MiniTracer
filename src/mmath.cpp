@@ -188,8 +188,8 @@ float mat4x4::determinant(const mat4x4 &a) {
     return (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
 }
 
-optional<mat4x4> mat4x4::inverse(const mat4x4 &a) {
-    optional<mat4x4> r;
+Optional<mat4x4> mat4x4::inverse(const mat4x4 &a) {
+    Optional<mat4x4> r;
     float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
     float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
     float s2 = a.data[0][0] * a.data[1][3] - a.data[1][0] * a.data[0][3];
@@ -206,7 +206,7 @@ optional<mat4x4> mat4x4::inverse(const mat4x4 &a) {
 
     float d = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
     if(d == 0.0f) {
-        r.type = result_type::NONE;
+        r.type = Result_Type::NONE;
         return r;
     }
 
@@ -233,7 +233,7 @@ optional<mat4x4> mat4x4::inverse(const mat4x4 &a) {
     m.data[3][2] = (-a.data[3][0] * s3 + a.data[3][1] * s1 - a.data[3][2] * s0) * inv_d;
     m.data[3][3] = ( a.data[2][0] * s3 - a.data[2][1] * s1 + a.data[2][2] * s0) * inv_d;
 
-    r.type = result_type::SOME;
+    r.type = Result_Type::SOME;
     return r; 
 }
 
@@ -525,11 +525,11 @@ ray &ray::operator=(const ray &other) {
     return *this;
 }
 
-vec3 &ray::orig() { return this->origin; }
-vec3 &ray::dir() { return this->direction; }
+vec3 &ray::o() { return this->origin; }
+vec3 &ray::d() { return this->direction; }
 
-const vec3 &ray::orig() const { return this->origin; }
-const vec3 &ray::dir() const { return this->direction; }
+const vec3 &ray::o() const { return this->origin; }
+const vec3 &ray::d() const { return this->direction; }
 
 vec3 ray::at(const float t) { 
     return (this->origin + (this->direction * t)); 

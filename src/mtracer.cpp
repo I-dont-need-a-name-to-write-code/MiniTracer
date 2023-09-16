@@ -1,6 +1,6 @@
 #include "../include/mtracer.h"
 
-void MiniTracer::per_pixel(color3 &fragColor, const vec2 &fragCoord) {
+void Mini_Tracer::per_pixel(color3 &fragColor, const vec2 &fragCoord) {
     float u = fragCoord.x() / (this->width  - 1); // [0, 1]
     float v = fragCoord.y() / (this->height - 1); // [0, 1]
     float su = (u * 2.0f) - 1.0f;          // [-1, 1]
@@ -9,13 +9,13 @@ void MiniTracer::per_pixel(color3 &fragColor, const vec2 &fragCoord) {
     fragColor = ray_color(r);
 }
 
-color3 MiniTracer::ray_color(const ray &r) {
-    float dy = r.dir().y();
+color3 Mini_Tracer::ray_color(const ray &r) {
+    float dy = r.d().y();
     float t = (dy + 1.0f) * 0.5f;
     return vec3::lerp(color3(1.0, 1.0, 1.0), color3(0.5, 0.7, 1.0), t);
 }
 
-MiniTracer::MiniTracer(uint32_t width, uint32_t height, 
+Mini_Tracer::Mini_Tracer(uint32_t width, uint32_t height, 
                        const point3 &cam_o, const vec3 &cam_look_dir, float vfov) 
 {
     this->width  = width;
@@ -25,7 +25,7 @@ MiniTracer::MiniTracer(uint32_t width, uint32_t height,
     this->camera = Camera(cam_o, cam_look_dir, vfov, this->aspect_ratio);
 }
 
-void MiniTracer::render() {
+void Mini_Tracer::render() {
     for(uint32_t y = 0; y < this->height; ++y) {
         for(uint32_t x = 0; x < this->width; ++x) {
             per_pixel(this->img_buffer[x + y * width], vec2(x, y));
@@ -33,7 +33,7 @@ void MiniTracer::render() {
     }
 }
 
-void MiniTracer::save_as_ppm(const char *file_path) {
+void Mini_Tracer::save_as_ppm(const char *file_path) {
     std::ofstream img(file_path);
     if(!img.is_open()) {
         std::cerr << "[ERR -> COULD NOT OPEN FILE : " << file_path << "]\n";
@@ -49,6 +49,6 @@ void MiniTracer::save_as_ppm(const char *file_path) {
     img.close();
 }
 
-MiniTracer::~MiniTracer() {
+Mini_Tracer::~Mini_Tracer() {
     delete [] this->img_buffer;
 }

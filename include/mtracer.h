@@ -7,13 +7,13 @@
 #include "./mmath.h"
 #include "./mcamera.h"
 
-class MiniTracer {
+class Mini_Tracer {
 public:
-    MiniTracer(uint32_t width, uint32_t height,
+    Mini_Tracer(uint32_t width, uint32_t height,
                const point3 &cam_o, const vec3 &cam_look_dir, float vfov);
     void render();
     void save_as_ppm(const char *file_path);
-    ~MiniTracer();
+    ~Mini_Tracer();
 
 private:
     color3 ray_color(const ray &r);

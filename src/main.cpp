@@ -11,7 +11,7 @@ int main(void) {
     const vec3 cam_look_dir = vec3(0, 0, 1); 
     const float vfov = deg_to_rad(90);
     
-    MiniTracer mt(width, height, 
+    Mini_Tracer mt(width, height, 
                   cam_origin, cam_look_dir, vfov);
     mt.render();
     mt.save_as_ppm("./render/image.ppm");

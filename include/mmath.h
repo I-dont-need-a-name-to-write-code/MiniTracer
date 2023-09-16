@@ -13,15 +13,14 @@
     #define M_SQRT sqrtf
 #endif
 
-
 class mat4x4;
 class vec2;
 class vec3;
 
-enum class result_type { NONE = 0 , SOME = 1 };
+enum class Result_Type { NONE = 0 , SOME = 1 };
 template <typename T>
-struct optional {
-    result_type type;
+struct Optional {
+    Result_Type type;
     T result;
 };
 
@@ -54,7 +53,7 @@ public:
     mat4x4 &transpose();
     static mat4x4 transpose(const mat4x4 &a); 
     static float  determinant(const mat4x4 &a);
-    static optional<mat4x4> inverse(const mat4x4 &a);
+    static Optional<mat4x4> inverse(const mat4x4 &a);
 
     // debug
     friend std::ostream &operator<<(std::ostream &out, const mat4x4 &other);
@@ -174,11 +173,11 @@ class ray {
         ray &operator=(const ray &other);
         
         // getter and setter
-        vec3 &orig();
-        vec3 &dir();
+        vec3 &o();
+        vec3 &d();
 
-        const vec3 &orig() const;
-        const vec3 &dir() const;
+        const vec3 &o() const;
+        const vec3 &d() const;
 
         vec3 at(const float t);
 
