@@ -16,6 +16,7 @@ public:
     ~MiniTracer();
 
 private:
+    color3 ray_color(const ray &r);
     void per_pixel(color3 &fragColor, const vec2 &fragCoord);
     
 private:

@@ -3,15 +3,16 @@
 void MiniTracer::per_pixel(color3 &fragColor, const vec2 &fragCoord) {
     float u = fragCoord.x() / (this->width  - 1); // [0, 1]
     float v = fragCoord.y() / (this->height - 1); // [0, 1]
-
     float su = (u * 2.0f) - 1.0f;          // [-1, 1]
     float sv = ((1.0f - v) * 2.0f) - 1.0f; // [1, -1]
     ray r = camera.get_ray(su, sv);
+    fragColor = ray_color(r);
+}
 
+color3 MiniTracer::ray_color(const ray &r) {
     float dy = r.dir().y();
     float t = (dy + 1.0f) * 0.5f;
-
-    fragColor = vec3::lerp(color3(1, 1, 1), color3(0.5, 0.7, 1.0), t);
+    return vec3::lerp(color3(1.0, 1.0, 1.0), color3(0.5, 0.7, 1.0), t);
 }
 
 MiniTracer::MiniTracer(uint32_t width, uint32_t height, 
