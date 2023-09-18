@@ -3,7 +3,10 @@
 
 #include "./mmath.h"
 
-class Hit_Info;
+struct Hit_Info {
+    bool  is_hit;
+    float t;
+};
 
 enum class Object_Type {
     DEFAULT,
@@ -17,11 +20,21 @@ struct Object {
 
 class Sphere {
 public:
+    Sphere() = default;
     Sphere(const point3 &origin, const float radius);
+
+    // getter and setter
+    float  &r(); 
+    point3 &o(); 
+    const float  &r() const; 
+    const point3 &o() const; 
+
+    // ray hit intersection
     static Hit_Info hit(const Sphere &sphere, const ray &r);
+
 private:
-    float  r;
-    point3 o;
+    float  radius;
+    point3 origin;
 };  
 
 #endif // MINI_OBJECT_H

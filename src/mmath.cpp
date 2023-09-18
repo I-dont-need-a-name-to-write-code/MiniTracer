@@ -531,7 +531,7 @@ vec3 &ray::d() { return this->direction; }
 const vec3 &ray::o() const { return this->origin; }
 const vec3 &ray::d() const { return this->direction; }
 
-vec3 ray::at(const float t) { 
+vec3 ray::at(const float t) const { 
     return (this->origin + (this->direction * t)); 
 }
 

@@ -6,7 +6,7 @@
 class Camera {
 public:
     Camera() = default;
-    Camera(const point3 &origin, const vec3 &look_dir, float vfov, float aspect_ratio);
+    Camera(const point3 &origin, const vec3 &look_at, float vfov, float aspect_ratio);
 
     // su range [-1, 1] && sv range [1, -1]
     ray get_ray(const float su, const float sv);

@@ -6,6 +6,7 @@
 
 #include "./mmath.h"
 #include "./mcamera.h"
+#include "./mobject.h"
 
 class Mini_Tracer {
 public:
@@ -16,7 +17,7 @@ public:
     ~Mini_Tracer();
 
 private:
-    color3 ray_color(const ray &r);
+    color3 find_pixel_color(const ray &r);
     void per_pixel(color3 &fragColor, const vec2 &fragCoord);
     
 private:
@@ -26,6 +27,7 @@ private:
     uint32_t width;
     uint32_t height;
     Camera camera;
+    Sphere sphere;
 };
 
 #endif // MINI_TRACER_H

@@ -2,7 +2,7 @@
 #define MINI_MATH_H
 
 #include <iostream>
-#include <cmath>
+#include <math.h>
 #include <limits>
 
 #ifndef M_PI
@@ -179,7 +179,7 @@ class ray {
         const vec3 &o() const;
         const vec3 &d() const;
 
-        vec3 at(const float t);
+        vec3 at(const float t) const;
 
     private:
         vec3 direction;
