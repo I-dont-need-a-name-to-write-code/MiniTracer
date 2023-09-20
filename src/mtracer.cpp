@@ -6,28 +6,21 @@ void Mini_Tracer::per_pixel(color3 &fragColor, const vec2 &fragCoord) {
     float su = (u * 2.0f) - 1.0f;          // [-1, 1]
     float sv = ((1.0f - v) * 2.0f) - 1.0f; // [1, -1]
     ray r = camera.get_ray(su, sv);
-    fragColor = find_pixel_color(r);
+    fragColor = trace_ray(r);
 }
 
-color3 Mini_Tracer::find_pixel_color(const ray &r) {
-    Hit_Info info = Sphere::hit(this->sphere, r);
-    if(info.is_hit) {
-        point3 hit_point = r.at(info.t);
-        vec3 n = vec3::normalize(hit_point - sphere.o());
-        return n; 
-    }
+color3 Mini_Tracer::trace_ray(const ray &r) {
     return color3(0.1, 0.1, 0.1);
 }
 
 Mini_Tracer::Mini_Tracer(uint32_t width, uint32_t height, 
-                       const point3 &cam_o, const vec3 &cam_look_dir, float vfov) 
+                         const point3 &cam_o, const vec3 &cam_look_dir, float vfov) 
 {
     this->width  = width;
     this->height = height;
     this->img_buffer   = new color3[width * height];
     this->aspect_ratio = (float)width / (float)height;
     this->camera = Camera(cam_o, cam_look_dir, vfov, this->aspect_ratio);
-    this->sphere = Sphere(point3(0, 0, 0), 0.5);
 }
 
 void Mini_Tracer::render() {

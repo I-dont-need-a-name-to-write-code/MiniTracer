@@ -11,13 +11,13 @@
 class Mini_Tracer {
 public:
     Mini_Tracer(uint32_t width, uint32_t height,
-               const point3 &cam_o, const vec3 &cam_look_dir, float vfov);
+                const point3 &cam_o, const vec3 &cam_look_dir, float vfov);
     void render();
     void save_as_ppm(const char *file_path);
     ~Mini_Tracer();
 
 private:
-    color3 find_pixel_color(const ray &r);
+    color3 trace_ray(const ray &r);
     void per_pixel(color3 &fragColor, const vec2 &fragCoord);
     
 private:
@@ -26,8 +26,7 @@ private:
     float    aspect_ratio;
     uint32_t width;
     uint32_t height;
-    Camera camera;
-    Sphere sphere;
+    Camera   camera;
 };
 
 #endif // MINI_TRACER_H

@@ -4,8 +4,14 @@
 #include "./mmath.h"
 
 struct Hit_Info {
-    bool  is_hit;
-    float t;
+    bool   is_hit;
+    float  t;
+    point3 hit_point;
+    vec3   normal;
+};
+
+struct Material {
+    color3 albedo;
 };
 
 enum class Object_Type {
@@ -13,7 +19,10 @@ enum class Object_Type {
     SPHERE
 };
 
-struct Object {
+class Object {
+public:
+    Object(Object_Type type, void *p_obj);
+public:
     void *p_obj = nullptr;
     Object_Type type = Object_Type::DEFAULT;
 };
@@ -33,8 +42,8 @@ public:
     static Hit_Info hit(const Sphere &sphere, const ray &r);
 
 private:
-    float  radius;
-    point3 origin;
+    float    radius;
+    point3   origin;
 };  
 
 #endif // MINI_OBJECT_H
