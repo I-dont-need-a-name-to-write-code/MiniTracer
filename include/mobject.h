@@ -3,15 +3,16 @@
 
 #include "./mmath.h"
 
+struct Material {
+    color3 albedo;
+};
+
 struct Hit_Info {
     bool   is_hit;
     float  t;
     point3 hit_point;
     vec3   normal;
-};
-
-struct Material {
-    color3 albedo;
+    const Material *p_mat;
 };
 
 enum class Object_Type {
@@ -30,7 +31,7 @@ public:
 class Sphere {
 public:
     Sphere() = default;
-    Sphere(const point3 &origin, const float radius);
+    Sphere(const point3 &origin, const float radius, const Material *p_mat);
 
     // getter and setter
     float  &r(); 
@@ -38,12 +39,15 @@ public:
     const float  &r() const; 
     const point3 &o() const; 
 
+    const Material *p_mat() const;
+
     // ray hit intersection
     static Hit_Info hit(const Sphere &sphere, const ray &r);
 
 private:
     float    radius;
     point3   origin;
+    const Material *p_material;
 };  
 
 #endif // MINI_OBJECT_H

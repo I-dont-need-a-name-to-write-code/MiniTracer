@@ -3,22 +3,34 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "./mmath.h"
 #include "./mcamera.h"
 #include "./mobject.h"
 
+class Scene {
+public:
+    Scene() = default;
+    void add_object(Object_Type type, void *p_obj);
+public:
+    std::vector<Object> objects;
+};
+
 class Mini_Tracer {
 public:
-    Mini_Tracer(uint32_t width, uint32_t height,
-                const point3 &cam_o, const vec3 &cam_look_dir, float vfov);
+    Mini_Tracer(uint32_t width, uint32_t height, const point3 &cam_o, 
+                const vec3 &cam_look_at, float vfov, const Scene *p_scene);
+    
     void render();
     void save_as_ppm(const char *file_path);
+
     ~Mini_Tracer();
 
 private:
-    color3 trace_ray(const ray &r);
     void per_pixel(color3 &fragColor, const vec2 &fragCoord);
+    color3 trace_ray(const ray &r);
+    Hit_Info check_ray_collision(const ray &r);
     
 private:
     // color3 -> < red range [0, 1], green range [0, 1], blue range [0, 1] >
@@ -26,9 +38,10 @@ private:
     float    aspect_ratio;
     uint32_t width;
     uint32_t height;
-    Camera   camera;
+
+private:
+    Camera camera;
+    const Scene *p_scene;
 };
 
 #endif // MINI_TRACER_H
-
-
