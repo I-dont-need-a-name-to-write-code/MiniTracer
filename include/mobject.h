@@ -5,6 +5,8 @@
 
 struct Material {
     color3 albedo;
+    color3 emission_color;
+    float  emission_strength;
 };
 
 struct Hit_Info {
@@ -45,9 +47,9 @@ public:
     static Hit_Info hit(const Sphere &sphere, const ray &r);
 
 private:
-    float    radius;
-    point3   origin;
-    const Material *p_material;
+    float    m_r;
+    point3   m_o;
+    const Material *m_p_mat;
 };  
 
 #endif // MINI_OBJECT_H

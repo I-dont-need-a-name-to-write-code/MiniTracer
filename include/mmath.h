@@ -66,12 +66,14 @@ public:
     static const mat4x4 ZERO;
 
 private:
-    float data[4][4];
+    float m_data[4][4];
 };
 
 class vec2 {
 public:
-    vec2(float x = 0.0f, float y = 0.0f);
+    vec2() = default;
+    vec2(float s);
+    vec2(float x, float y);
     vec2(const vec2& other);
     vec2 &operator=(const vec2& other);
     
@@ -110,7 +112,7 @@ public:
     friend std::ostream &operator<<(std::ostream& out, const vec2& vec);
 
 private:
-        float v[2];
+        float m_v[2];
 };
 
 using float2 = vec2;
@@ -118,7 +120,9 @@ using point2 = vec2;
 
 class vec3 {
 public:
-    vec3(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+    vec3() = default;
+    vec3(float s);
+    vec3(float x, float y, float z);
     vec3(const vec3& other);
     vec3 &operator=(const vec3& other);
 
@@ -159,7 +163,7 @@ public:
     friend std::ostream &operator<<(std::ostream& out, const vec3& vec);
 
 private:
-    float v[3];
+    float m_v[3];
 };
 
 using float3 = vec3;
@@ -168,6 +172,7 @@ using color3 = vec3;
 
 class ray {
     public: 
+        ray() = default;
         ray(const vec3 &orig, const vec3 &dir);
         ray(const ray &other);
         ray &operator=(const ray &other);
@@ -182,8 +187,8 @@ class ray {
         vec3 at(const float t) const;
 
     private:
-        vec3 direction;
-        vec3 origin;
+        vec3 m_d;
+        vec3 m_o;
 };
  
 // general math functions

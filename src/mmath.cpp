@@ -22,10 +22,10 @@ mat4x4::mat4x4(float m00, float m01, float m02, float m03,
                float m20, float m21, float m22, float m23,
                float m30, float m31, float m32, float m33) 
 {
-    this->data[0][0] = m00;  this->data[0][1] = m01; this->data[0][2] = m02; this->data[0][3] = m03;
-    this->data[1][0] = m10;  this->data[1][1] = m11; this->data[1][2] = m12; this->data[1][3] = m13;
-    this->data[2][0] = m20;  this->data[2][1] = m21; this->data[2][2] = m22; this->data[2][3] = m23;
-    this->data[3][0] = m30;  this->data[3][1] = m31; this->data[3][2] = m32; this->data[3][3] = m33;
+    this->m_data[0][0] = m00;  this->m_data[0][1] = m01; this->m_data[0][2] = m02; this->m_data[0][3] = m03;
+    this->m_data[1][0] = m10;  this->m_data[1][1] = m11; this->m_data[1][2] = m12; this->m_data[1][3] = m13;
+    this->m_data[2][0] = m20;  this->m_data[2][1] = m21; this->m_data[2][2] = m22; this->m_data[2][3] = m23;
+    this->m_data[3][0] = m30;  this->m_data[3][1] = m31; this->m_data[3][2] = m32; this->m_data[3][3] = m33;
 }
 
 mat4x4::mat4x4(const mat4x4 &other) {
@@ -39,21 +39,21 @@ mat4x4 &mat4x4::operator=(const mat4x4 &other) {
     return *this;
 }
 
-float &mat4x4::at(uint8_t i, uint8_t j) { return this->data[i][j]; }
-const float &mat4x4::at(uint8_t i, uint8_t j) const { return this->data[i][j]; }
+float &mat4x4::at(uint8_t i, uint8_t j) { return this->m_data[i][j]; }
+const float &mat4x4::at(uint8_t i, uint8_t j) const { return this->m_data[i][j]; }
 
 void mat4x4::copy(const mat4x4 &other) {
     for(uint8_t i = 0; i < 16; ++i) {
-       *((float*)&this->data + i) = *((float*)&other.data + i);
+       *((float*)&this->m_data + i) = *((float*)&other.m_data + i);
     }
 }
 
 vec3 operator*(const mat4x4 &m, const vec3 &v) {
     vec3 res;
-    res.x() = (m.data[0][0] * v.x()) + (m.data[0][1] * v.y()) + (m.data[0][2] * v.z()) + m.data[0][3];
-    res.y() = (m.data[1][0] * v.x()) + (m.data[1][1] * v.y()) + (m.data[1][2] * v.z()) + m.data[1][3];
-    res.z() = (m.data[2][0] * v.x()) + (m.data[2][1] * v.y()) + (m.data[2][2] * v.z()) + m.data[2][3];
-    float w = (m.data[3][0] * v.x()) + (m.data[3][1] * v.y()) + (m.data[3][2] * v.z()) + m.data[3][3];
+    res.x() = (m.m_data[0][0] * v.x()) + (m.m_data[0][1] * v.y()) + (m.m_data[0][2] * v.z()) + m.m_data[0][3];
+    res.y() = (m.m_data[1][0] * v.x()) + (m.m_data[1][1] * v.y()) + (m.m_data[1][2] * v.z()) + m.m_data[1][3];
+    res.z() = (m.m_data[2][0] * v.x()) + (m.m_data[2][1] * v.y()) + (m.m_data[2][2] * v.z()) + m.m_data[2][3];
+    float w = (m.m_data[3][0] * v.x()) + (m.m_data[3][1] * v.y()) + (m.m_data[3][2] * v.z()) + m.m_data[3][3];
     
     if((w != 0.0f) && (w != 1.0f)) {
         float inv_w = 1.0f / w;
@@ -69,7 +69,7 @@ mat4x4 operator+(const mat4x4 &a, const mat4x4 &b) {
     mat4x4 c;
     for(uint8_t i = 0; i < 4; ++i) {
         for(uint8_t j = 0; j < 4; ++j) { 
-            c.data[i][j] = a.data[i][j] + b.data[i][j];
+            c.m_data[i][j] = a.m_data[i][j] + b.m_data[i][j];
         }
     }
     return c;
@@ -79,7 +79,7 @@ mat4x4 operator-(const mat4x4 &a, const mat4x4 &b) {
     mat4x4 c;
     for(uint8_t i = 0; i < 4; ++i) {
         for(uint8_t j = 0; j < 4; ++j) { 
-            c.data[i][j] = a.data[i][j] - b.data[i][j];
+            c.m_data[i][j] = a.m_data[i][j] - b.m_data[i][j];
         }
     }
     return c;
@@ -89,9 +89,9 @@ mat4x4 operator*(const mat4x4 &a, const mat4x4 &b) {
     mat4x4 c;
     for(uint8_t i = 0; i < 4; ++i) {
         for(uint8_t j = 0; j < 4; ++j) { 
-            c.data[i][j] = 0;
+            c.m_data[i][j] = 0;
             for(uint8_t k = 0; k < 4; ++k) {
-                c.data[i][j] += a.data[i][k] * b.data[k][j];
+                c.m_data[i][j] += a.m_data[i][k] * b.m_data[k][j];
             }
         }
     }
@@ -102,7 +102,7 @@ mat4x4 operator*(const mat4x4 &a, const float scaler) {
     mat4x4 res;
     for(uint8_t i = 0; i < 4; ++i) {
         for(uint8_t j = 0; j < 4; ++j) {
-            res.data[i][j] = scaler * a.data[i][j];
+            res.m_data[i][j] = scaler * a.m_data[i][j];
         }
     }
     return res;
@@ -152,9 +152,9 @@ mat4x4 &mat4x4::transpose() {
     float temp;
     for(uint8_t d = 0; d < 3; ++d) {
         for(uint8_t i = (d + 1); i < 4; ++i) {
-            temp = this->data[d][i];
-            this->data[d][i] = this->data[i][d];
-            this->data[i][d] = temp;
+            temp = this->m_data[d][i];
+            this->m_data[d][i] = this->m_data[i][d];
+            this->m_data[i][d] = temp;
         }
     }
     return *this;
@@ -164,45 +164,45 @@ mat4x4 mat4x4::transpose(const mat4x4 &a) {
     mat4x4 a_t;
     for(uint8_t i = 0; i < 4; ++i) {
         for(uint8_t j = 0; j < 4; ++j) {
-            a_t.data[j][i] = a.data[i][j];   
+            a_t.m_data[j][i] = a.m_data[i][j];   
         }
     }
     return a_t;
 }
 
 float mat4x4::determinant(const mat4x4 &a) {
-    float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
-    float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
-    float s2 = a.data[0][0] * a.data[1][3] - a.data[1][0] * a.data[0][3];
-    float s3 = a.data[0][1] * a.data[1][2] - a.data[1][1] * a.data[0][2];
-    float s4 = a.data[0][1] * a.data[1][3] - a.data[1][1] * a.data[0][3];
-    float s5 = a.data[0][2] * a.data[1][3] - a.data[1][2] * a.data[0][3];
+    float s0 = a.m_data[0][0] * a.m_data[1][1] - a.m_data[1][0] * a.m_data[0][1];
+    float s1 = a.m_data[0][0] * a.m_data[1][2] - a.m_data[1][0] * a.m_data[0][2];
+    float s2 = a.m_data[0][0] * a.m_data[1][3] - a.m_data[1][0] * a.m_data[0][3];
+    float s3 = a.m_data[0][1] * a.m_data[1][2] - a.m_data[1][1] * a.m_data[0][2];
+    float s4 = a.m_data[0][1] * a.m_data[1][3] - a.m_data[1][1] * a.m_data[0][3];
+    float s5 = a.m_data[0][2] * a.m_data[1][3] - a.m_data[1][2] * a.m_data[0][3];
 
-    float c5 = a.data[2][2] * a.data[3][3] - a.data[3][2] * a.data[2][3];
-    float c4 = a.data[2][1] * a.data[3][3] - a.data[3][1] * a.data[2][3];
-    float c3 = a.data[2][1] * a.data[3][2] - a.data[3][1] * a.data[2][2];
-    float c2 = a.data[2][0] * a.data[3][3] - a.data[3][0] * a.data[2][3];
-    float c1 = a.data[2][0] * a.data[3][2] - a.data[3][0] * a.data[2][2];
-    float c0 = a.data[2][0] * a.data[3][1] - a.data[3][0] * a.data[2][1];
+    float c5 = a.m_data[2][2] * a.m_data[3][3] - a.m_data[3][2] * a.m_data[2][3];
+    float c4 = a.m_data[2][1] * a.m_data[3][3] - a.m_data[3][1] * a.m_data[2][3];
+    float c3 = a.m_data[2][1] * a.m_data[3][2] - a.m_data[3][1] * a.m_data[2][2];
+    float c2 = a.m_data[2][0] * a.m_data[3][3] - a.m_data[3][0] * a.m_data[2][3];
+    float c1 = a.m_data[2][0] * a.m_data[3][2] - a.m_data[3][0] * a.m_data[2][2];
+    float c0 = a.m_data[2][0] * a.m_data[3][1] - a.m_data[3][0] * a.m_data[2][1];
 
     return (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
 }
 
 Optional<mat4x4> mat4x4::inverse(const mat4x4 &a) {
     Optional<mat4x4> r;
-    float s0 = a.data[0][0] * a.data[1][1] - a.data[1][0] * a.data[0][1];
-    float s1 = a.data[0][0] * a.data[1][2] - a.data[1][0] * a.data[0][2];
-    float s2 = a.data[0][0] * a.data[1][3] - a.data[1][0] * a.data[0][3];
-    float s3 = a.data[0][1] * a.data[1][2] - a.data[1][1] * a.data[0][2];
-    float s4 = a.data[0][1] * a.data[1][3] - a.data[1][1] * a.data[0][3];
-    float s5 = a.data[0][2] * a.data[1][3] - a.data[1][2] * a.data[0][3];
+    float s0 = a.m_data[0][0] * a.m_data[1][1] - a.m_data[1][0] * a.m_data[0][1];
+    float s1 = a.m_data[0][0] * a.m_data[1][2] - a.m_data[1][0] * a.m_data[0][2];
+    float s2 = a.m_data[0][0] * a.m_data[1][3] - a.m_data[1][0] * a.m_data[0][3];
+    float s3 = a.m_data[0][1] * a.m_data[1][2] - a.m_data[1][1] * a.m_data[0][2];
+    float s4 = a.m_data[0][1] * a.m_data[1][3] - a.m_data[1][1] * a.m_data[0][3];
+    float s5 = a.m_data[0][2] * a.m_data[1][3] - a.m_data[1][2] * a.m_data[0][3];
 
-    float c5 = a.data[2][2] * a.data[3][3] - a.data[3][2] * a.data[2][3];
-    float c4 = a.data[2][1] * a.data[3][3] - a.data[3][1] * a.data[2][3];
-    float c3 = a.data[2][1] * a.data[3][2] - a.data[3][1] * a.data[2][2];
-    float c2 = a.data[2][0] * a.data[3][3] - a.data[3][0] * a.data[2][3];
-    float c1 = a.data[2][0] * a.data[3][2] - a.data[3][0] * a.data[2][2];
-    float c0 = a.data[2][0] * a.data[3][1] - a.data[3][0] * a.data[2][1];
+    float c5 = a.m_data[2][2] * a.m_data[3][3] - a.m_data[3][2] * a.m_data[2][3];
+    float c4 = a.m_data[2][1] * a.m_data[3][3] - a.m_data[3][1] * a.m_data[2][3];
+    float c3 = a.m_data[2][1] * a.m_data[3][2] - a.m_data[3][1] * a.m_data[2][2];
+    float c2 = a.m_data[2][0] * a.m_data[3][3] - a.m_data[3][0] * a.m_data[2][3];
+    float c1 = a.m_data[2][0] * a.m_data[3][2] - a.m_data[3][0] * a.m_data[2][2];
+    float c0 = a.m_data[2][0] * a.m_data[3][1] - a.m_data[3][0] * a.m_data[2][1];
 
     float d = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
     if(d == 0.0f) {
@@ -213,25 +213,25 @@ Optional<mat4x4> mat4x4::inverse(const mat4x4 &a) {
     mat4x4 &m = r.result;
     float inv_d = 1.0f / d;      
 
-    m.data[0][0] = ( a.data[1][1] * c5 - a.data[1][2] * c4 + a.data[1][3] * c3) * inv_d;
-    m.data[0][1] = (-a.data[0][1] * c5 + a.data[0][2] * c4 - a.data[0][3] * c3) * inv_d;
-    m.data[0][2] = ( a.data[3][1] * s5 - a.data[3][2] * s4 + a.data[3][3] * s3) * inv_d;
-    m.data[0][3] = (-a.data[2][1] * s5 + a.data[2][2] * s4 - a.data[2][3] * s3) * inv_d;
+    m.m_data[0][0] = ( a.m_data[1][1] * c5 - a.m_data[1][2] * c4 + a.m_data[1][3] * c3) * inv_d;
+    m.m_data[0][1] = (-a.m_data[0][1] * c5 + a.m_data[0][2] * c4 - a.m_data[0][3] * c3) * inv_d;
+    m.m_data[0][2] = ( a.m_data[3][1] * s5 - a.m_data[3][2] * s4 + a.m_data[3][3] * s3) * inv_d;
+    m.m_data[0][3] = (-a.m_data[2][1] * s5 + a.m_data[2][2] * s4 - a.m_data[2][3] * s3) * inv_d;
                                                                    
-    m.data[1][0] = (-a.data[1][0] * c5 + a.data[1][2] * c2 - a.data[1][3] * c1) * inv_d;
-    m.data[1][1] = ( a.data[0][0] * c5 - a.data[0][2] * c2 + a.data[0][3] * c1) * inv_d;
-    m.data[1][2] = (-a.data[3][0] * s5 + a.data[3][2] * s2 - a.data[3][3] * s1) * inv_d;
-    m.data[1][3] = ( a.data[2][0] * s5 - a.data[2][2] * s2 + a.data[2][3] * s1) * inv_d;
+    m.m_data[1][0] = (-a.m_data[1][0] * c5 + a.m_data[1][2] * c2 - a.m_data[1][3] * c1) * inv_d;
+    m.m_data[1][1] = ( a.m_data[0][0] * c5 - a.m_data[0][2] * c2 + a.m_data[0][3] * c1) * inv_d;
+    m.m_data[1][2] = (-a.m_data[3][0] * s5 + a.m_data[3][2] * s2 - a.m_data[3][3] * s1) * inv_d;
+    m.m_data[1][3] = ( a.m_data[2][0] * s5 - a.m_data[2][2] * s2 + a.m_data[2][3] * s1) * inv_d;
                                                                    
-    m.data[2][0] = ( a.data[1][0] * c4 - a.data[1][1] * c2 + a.data[1][3] * c0) * inv_d;
-    m.data[2][1] = (-a.data[0][0] * c4 + a.data[0][1] * c2 - a.data[0][3] * c0) * inv_d;
-    m.data[2][2] = ( a.data[3][0] * s4 - a.data[3][1] * s2 + a.data[3][3] * s0) * inv_d;
-    m.data[2][3] = (-a.data[2][0] * s4 + a.data[2][1] * s2 - a.data[2][3] * s0) * inv_d;
+    m.m_data[2][0] = ( a.m_data[1][0] * c4 - a.m_data[1][1] * c2 + a.m_data[1][3] * c0) * inv_d;
+    m.m_data[2][1] = (-a.m_data[0][0] * c4 + a.m_data[0][1] * c2 - a.m_data[0][3] * c0) * inv_d;
+    m.m_data[2][2] = ( a.m_data[3][0] * s4 - a.m_data[3][1] * s2 + a.m_data[3][3] * s0) * inv_d;
+    m.m_data[2][3] = (-a.m_data[2][0] * s4 + a.m_data[2][1] * s2 - a.m_data[2][3] * s0) * inv_d;
                                                                    
-    m.data[3][0] = (-a.data[1][0] * c3 + a.data[1][1] * c1 - a.data[1][2] * c0) * inv_d;
-    m.data[3][1] = ( a.data[0][0] * c3 - a.data[0][1] * c1 + a.data[0][2] * c0) * inv_d;
-    m.data[3][2] = (-a.data[3][0] * s3 + a.data[3][1] * s1 - a.data[3][2] * s0) * inv_d;
-    m.data[3][3] = ( a.data[2][0] * s3 - a.data[2][1] * s1 + a.data[2][2] * s0) * inv_d;
+    m.m_data[3][0] = (-a.m_data[1][0] * c3 + a.m_data[1][1] * c1 - a.m_data[1][2] * c0) * inv_d;
+    m.m_data[3][1] = ( a.m_data[0][0] * c3 - a.m_data[0][1] * c1 + a.m_data[0][2] * c0) * inv_d;
+    m.m_data[3][2] = (-a.m_data[3][0] * s3 + a.m_data[3][1] * s1 - a.m_data[3][2] * s0) * inv_d;
+    m.m_data[3][3] = ( a.m_data[2][0] * s3 - a.m_data[2][1] * s1 + a.m_data[2][2] * s0) * inv_d;
 
     r.type = Result_Type::SOME;
     return r; 
@@ -242,7 +242,7 @@ std::ostream &operator<<(std::ostream &out, const mat4x4 &other) {
     for(uint8_t i = 0; i < 4; ++i) {
         out << "  [";
         for(uint8_t j = 0; j < 4; ++j) {
-            out << other.data[i][j];
+            out << other.m_data[i][j];
             if(j != 3) out << ", ";
         }
         out << "]\n";
@@ -252,66 +252,70 @@ std::ostream &operator<<(std::ostream &out, const mat4x4 &other) {
 }
 
 // VEC2
+vec2::vec2(float s) {
+    this->m_v[0] = this->m_v[1] = s;
+}
+
 vec2::vec2(float x, float y) {
-    this->v[0] = x;
-    this->v[1] = y;
+    this->m_v[0] = x;
+    this->m_v[1] = y;
 }
 
 vec2::vec2(const vec2& other) {
-    this->v[0] = other.v[0];
-    this->v[1] = other.v[1];
+    this->m_v[0] = other.m_v[0];
+    this->m_v[1] = other.m_v[1];
 }
 
 vec2 &vec2::operator=(const vec2& other) {
     if(this != &other) {
-        this->v[0] = other.v[0];
-        this->v[1] = other.v[1];
+        this->m_v[0] = other.m_v[0];
+        this->m_v[1] = other.m_v[1];
     } 
     return *this;
 }
 
-float &vec2::x() { return this->v[0]; }
-float &vec2::y() { return this->v[1]; }
+float &vec2::x() { return this->m_v[0]; }
+float &vec2::y() { return this->m_v[1]; }
 
-const float &vec2::x() const { return this->v[0]; }
-const float &vec2::y() const { return this->v[1]; }
+const float &vec2::x() const { return this->m_v[0]; }
+const float &vec2::y() const { return this->m_v[1]; }
 
 vec2 vec2::lerp(const vec2 &a, const vec2 &b, const float t) {
     return (a + (b - a) * t);
 }
 
 vec2 vec2::clamp(const vec2 &a, const vec2 &min, const vec2 &max) {
-    return vec2( clampf(a.v[0], min.v[0], max.v[0]),
-                 clampf(a.v[1], min.v[1], max.v[1]) );
+    return vec2( clampf(a.m_v[0], min.m_v[0], max.m_v[0]),
+                 clampf(a.m_v[1], min.m_v[1], max.m_v[1]) );
 }
 
 vec2 vec2::clamp(const vec2 &a, const float min, const float max) {        
-    return vec2( clampf(a.v[0], min, max),
-                 clampf(a.v[1], min, max) );
+    return vec2( clampf(a.m_v[0], min, max),
+                 clampf(a.m_v[1], min, max) );
 }
 
 vec2 operator-(const vec2 &a) {
-    return vec2(-a.v[0], -a.v[1]);   
+    return vec2(-a.m_v[0], -a.m_v[1]);   
 }
 
 vec2 operator+(const vec2 &a, const vec2& b) {
-    return vec2( (a.v[0] + b.v[0]),
-                 (a.v[1] + b.v[1]) );   
+    return vec2( (a.m_v[0] + b.m_v[0]),
+                 (a.m_v[1] + b.m_v[1]) );   
 }
 
 vec2 operator-(const vec2 &a, const vec2& b) {
-    return vec2( (a.v[0] - b.v[0]),
-                 (a.v[1] - b.v[1]) );   
+    return vec2( (a.m_v[0] - b.m_v[0]),
+                 (a.m_v[1] - b.m_v[1]) );   
 }
 
 vec2 operator*(const vec2 &a, const vec2& b) {
-    return vec2( (a.v[0] * b.v[0]),
-                 (a.v[1] * b.v[1]) );   
+    return vec2( (a.m_v[0] * b.m_v[0]),
+                 (a.m_v[1] * b.m_v[1]) );   
 }
 
 vec2 operator*(const vec2 &a, float s) {  
-    return vec2( (a.v[0] * s),
-                 (a.v[1] * s) );   
+    return vec2( (a.m_v[0] * s),
+                 (a.m_v[1] * s) );   
 }
 
 vec2 operator*(float s, const vec2 &a) {
@@ -319,8 +323,8 @@ vec2 operator*(float s, const vec2 &a) {
 }
 
 vec2 operator/(const vec2 &a, const vec2& b) {
-    return vec2( (a.v[0] / b.v[0]),
-                 (a.v[1] / b.v[1]) );   
+    return vec2( (a.m_v[0] / b.m_v[0]),
+                 (a.m_v[1] / b.m_v[1]) );   
 }
 
 vec2 operator/(const vec2 &a, float s) {
@@ -328,8 +332,8 @@ vec2 operator/(const vec2 &a, float s) {
 }
 
 float vec2::length_squared() const {
-    return ( (this->v[0] * this->v[0]) +
-             (this->v[1] * this->v[1]) );
+    return ( (this->m_v[0] * this->m_v[0]) +
+             (this->m_v[1] * this->m_v[1]) );
 }
 
 float vec2::length() const {
@@ -349,13 +353,13 @@ float vec2::get_distance(const vec2 &a, const vec2 &b) {
 }
 
 float vec2::dot(const vec2 &a, const vec2 &b) {
-    return ( (a.v[0] * b.v[0]) +
-             (a.v[1] * b.v[1]) );
+    return ( (a.m_v[0] * b.m_v[0]) +
+             (a.m_v[1] * b.m_v[1]) );
 }
 
 float vec2::cross(const vec2 &a, const vec2 &b) {
-    return ( (a.v[0] * b.v[1]) - 
-             (a.v[1] * b.v[0]) );
+    return ( (a.m_v[0] * b.m_v[1]) - 
+             (a.m_v[1] * b.m_v[0]) );
 }
 
 float vec2::angle_between(const vec2 &a, const vec2 &b) {
@@ -367,82 +371,85 @@ vec2 vec2::reflect(const vec2 &incident_ray, const vec2 &normal) {
 }
 
 std::ostream &operator<<(std::ostream& out, const vec2& vec) {
-    out << "[" << vec.v[0] << ", " << vec.v[1] << "]";
-    return out;
+    out << "[" << vec.m_v[0] << ", " << vec.m_v[1] << "]";
+    return out;       
 }
 
 // VEC3
+vec3::vec3(float s) {
+    this->m_v[0] = this->m_v[1] = this->m_v[2] = s;
+}
 vec3::vec3(float x, float y, float z) {
-    this->v[0] = x; 
-    this->v[1] = y;
-    this->v[2] = z;
+    this->m_v[0] = x; 
+    this->m_v[1] = y;
+    this->m_v[2] = z;
 }
 
 vec3::vec3(const vec3& other) {
-    this->v[0] = other.v[0]; 
-    this->v[1] = other.v[1];
-    this->v[2] = other.v[2];
+    this->m_v[0] = other.m_v[0]; 
+    this->m_v[1] = other.m_v[1];
+    this->m_v[2] = other.m_v[2];
 }
 
 vec3 &vec3::operator=(const vec3& other) {
     if(this != &other) {
-        this->v[0] = other.v[0];
-        this->v[1] = other.v[1];
-        this->v[2] = other.v[2];
+        this->m_v[0] = other.m_v[0];
+        this->m_v[1] = other.m_v[1];
+        this->m_v[2] = other.m_v[2];
     }
     return *this;
 }
 
-float &vec3::x() { return this->v[0]; }
-float &vec3::y() { return this->v[1]; }
-float &vec3::z() { return this->v[2]; }
+float &vec3::x() { return this->m_v[0]; }
+float &vec3::y() { return this->m_v[1]; }
+float &vec3::z() { return this->m_v[2]; }
 
-const float &vec3::x() const { return this->v[0]; } 
-const float &vec3::y() const { return this->v[1]; } 
-const float &vec3::z() const { return this->v[2]; }     
+const float &vec3::x() const { return this->m_v[0]; } 
+const float &vec3::y() const { return this->m_v[1]; } 
+const float &vec3::z() const { return this->m_v[2]; }     
 
 vec3 vec3::lerp(const vec3 &a, const vec3 &b, const float t) {
     return (a + (b - a) * t);
 }
 
 vec3 vec3::clamp(const vec3 &a, const vec3 &min, const vec3 &max) {
-    return vec3( clampf(a.v[0], min.v[0], max.v[0]),
-                 clampf(a.v[1], min.v[1], max.v[1]), 
-                 clampf(a.v[2], min.v[2], max.v[2]) );
+    return vec3( clampf(a.m_v[0], min.m_v[0], max.m_v[0]),
+                 clampf(a.m_v[1], min.m_v[1], max.m_v[1]), 
+                 clampf(a.m_v[2], min.m_v[2], max.m_v[2]) );
 }
 
 vec3 vec3::clamp(const vec3 &a, const float min, const float max) {
-    return vec3( clampf(a.v[0], min, max),
-                 clampf(a.v[1], min, max), 
-                 clampf(a.v[2], min, max) );
+    return vec3( clampf(a.m_v[0], min, max),
+                 clampf(a.m_v[1], min, max), 
+                 clampf(a.m_v[2], min, max) );
 }
 
 vec3 operator-(const vec3 &a) {
-    return vec3(-a.v[0], -a.v[1], -a.v[2]);
+    return vec3(-a.m_v[0], -a.m_v[1], -a.m_v[2]);
 }
 
 vec3 operator+(const vec3 &a, const vec3& b) {
-    return vec3( (a.v[0] + b.v[0]), 
-                 (a.v[1] + b.v[1]),
-                 (a.v[2] + b.v[2]) );
+    return vec3( (a.m_v[0] + b.m_v[0]), 
+                 (a.m_v[1] + b.m_v[1]),
+                 (a.m_v[2] + b.m_v[2]) );
 }
 
 vec3 operator-(const vec3 &a, const vec3& b) {
-    return vec3( (a.v[0] - b.v[0]), 
-                 (a.v[1] - b.v[1]),
-                 (a.v[2] - b.v[2]) );
+    return vec3( (a.m_v[0] - b.m_v[0]), 
+                 (a.m_v[1] - b.m_v[1]),
+                 (a.m_v[2] - b.m_v[2]) );
 }
 
 vec3 operator*(const vec3 &a, const vec3& b) {
-    return vec3( (a.v[0] * b.v[0]), 
-                 (a.v[1] * b.v[1]),
-                 (a.v[2] * b.v[2]) );
+    return vec3( (a.m_v[0] * b.m_v[0]), 
+                 (a.m_v[1] * b.m_v[1]),
+                 (a.m_v[2] * b.m_v[2]) );
 }
 
 vec3 operator*(const vec3 &a, float s) {
-    return vec3( (a.v[0] * s), 
-                 (a.v[1] * s),
-                 (a.v[2] * s) );
+    return vec3( (a.m_v[0] * s), 
+                 (a.m_v[1] * s),
+                 (a.m_v[2] * s) );
 }
 
 vec3 operator*(float s, const vec3 &a) {
@@ -450,9 +457,9 @@ vec3 operator*(float s, const vec3 &a) {
 }
 
 vec3 operator/(const vec3 &a, const vec3& b) {
-    return vec3( (a.v[0] / b.v[0]), 
-                 (a.v[1] / b.v[1]),
-                 (a.v[2] / b.v[2]) );
+    return vec3( (a.m_v[0] / b.m_v[0]), 
+                 (a.m_v[1] / b.m_v[1]),
+                 (a.m_v[2] / b.m_v[2]) );
 }
 
 vec3 operator/(const vec3 &a, float s) {
@@ -460,9 +467,9 @@ vec3 operator/(const vec3 &a, float s) {
 }
 
 float vec3::length_squared() const {
-    return ( (this->v[0] * this->v[0]) + 
-             (this->v[1] * this->v[1]) +
-             (this->v[2] * this->v[2]) );
+    return ( (this->m_v[0] * this->m_v[0]) + 
+             (this->m_v[1] * this->m_v[1]) +
+             (this->m_v[2] * this->m_v[2]) );
 }
 
 float vec3::length() const {
@@ -482,15 +489,15 @@ float vec3::get_distance(const vec3 &a, const vec3 &b) {
 }
 
 float vec3::dot(const vec3 &a, const vec3 &b) {
-    return ( (a.v[0] * b.v[0]) +
-             (a.v[1] * b.v[1]) +
-             (a.v[2] * b.v[2]) );
+    return ( (a.m_v[0] * b.m_v[0]) +
+             (a.m_v[1] * b.m_v[1]) +
+             (a.m_v[2] * b.m_v[2]) );
 }
 
 vec3 vec3::cross(const vec3 &a, const vec3 &b) {
-    return vec3( (a.v[1] * b.v[2] - a.v[2] * b.v[1]),
-                 (a.v[2] * b.v[0] - a.v[0] * b.v[2]),
-                 (a.v[0] * b.v[1] - a.v[1] * b.v[0]) );
+    return vec3( (a.m_v[1] * b.m_v[2] - a.m_v[2] * b.m_v[1]),
+                 (a.m_v[2] * b.m_v[0] - a.m_v[0] * b.m_v[2]),
+                 (a.m_v[0] * b.m_v[1] - a.m_v[1] * b.m_v[0]) );
 }
 
 float vec3::angle_between(const vec3 &a, const vec3 &b) {
@@ -502,37 +509,37 @@ vec3 vec3::reflect(const vec3 &incident_ray, const vec3 &normal) {
 }
 
 std::ostream &operator<<(std::ostream& out, const vec3& vec) {
-    out << "[" << vec.v[0] << ", " << vec.v[1] << ", " << vec.v[2] << "]";
+    out << "[" << vec.m_v[0] << ", " << vec.m_v[1] << ", " << vec.m_v[2] << "]";
     return out;
 }
 
 // RAY
 ray::ray(const vec3 &orig, const vec3 &dir) {
-    this->origin = orig;
-    this->direction = dir;
+    this-> m_o = orig;
+    this-> m_d = dir;
 }
 
 ray::ray(const ray &other) {
-    this->origin = other.origin;
-    this->direction = other.direction;
+    this->m_o = other.m_o;
+    this->m_d = other.m_d;
 }
 
 ray &ray::operator=(const ray &other) {
     if(this != &other) {
-        this->origin = other.origin;
-        this->direction = other.direction;
+        this->m_o = other.m_o;
+        this->m_d = other.m_d;
     }
     return *this;
 }
 
-vec3 &ray::o() { return this->origin; }
-vec3 &ray::d() { return this->direction; }
+vec3 &ray::o() { return this->m_o; }
+vec3 &ray::d() { return this->m_d; }
 
-const vec3 &ray::o() const { return this->origin; }
-const vec3 &ray::d() const { return this->direction; }
+const vec3 &ray::o() const { return this->m_o; }
+const vec3 &ray::d() const { return this->m_d; }
 
 vec3 ray::at(const float t) const { 
-    return (this->origin + (this->direction * t)); 
+    return (this->m_o + (this->m_d * t)); 
 }
 
 // general math functions

@@ -14,13 +14,15 @@ public:
     Scene() = default;
     void add_object(Object_Type type, void *p_obj);
 public:
-    std::vector<Object> objects;
+    std::vector<Object> m_objects;
 };
 
 class Mini_Tracer {
 public:
-    Mini_Tracer(uint32_t width, uint32_t height, const point3 &cam_o, 
-                const vec3 &cam_look_at, float vfov, const Scene *p_scene);
+    Mini_Tracer(uint32_t width, uint32_t height, 
+                const point3 &cam_o, const vec3 &cam_look_at, float vfov, 
+                const Scene *p_scene,
+                uint32_t max_bounces, uint32_t max_samples);
     
     void render();
     void save_as_ppm(const char *file_path);
@@ -29,7 +31,7 @@ public:
 
 private:
     void per_pixel(color3 &fragColor, const vec2 &fragCoord);
-    color3 trace_ray(const ray &r);
+    color3 trace_ray(const ray &r, uint32_t &rng_state);
     Hit_Info check_ray_collision(const ray &r);
     
 private:
@@ -38,10 +40,10 @@ private:
     float    aspect_ratio;
     uint32_t width;
     uint32_t height;
-
-private:
-    Camera camera;
+    Camera   camera;
     const Scene *p_scene;
+    uint32_t max_bounces;
+    uint32_t max_samples;
 };
 
 #endif // MINI_TRACER_H

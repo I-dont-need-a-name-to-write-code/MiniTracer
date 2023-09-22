@@ -12,13 +12,13 @@ public:
     ray get_ray(const float su, const float sv);
 
 private:
-    float  vfov;
-    float  viewport_width;
-    float  viewport_height;
-    float  aspect_ratio;
-    point3 origin;
-    vec3   look_dir;
-    vec3   u, v;
+    float  m_vfov;
+    float  m_viewport_width;
+    float  m_viewport_height;
+    float  m_aspect_ratio;
+    point3 m_origin;
+    vec3   m_look_dir;
+    vec3   m_u, m_v;
 };
 
 #endif // MINI_CAMERA_H
