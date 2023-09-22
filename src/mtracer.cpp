@@ -91,6 +91,16 @@ void Mini_Tracer::render() {
     }
 }
 
+void Mini_Tracer::preprocess() {
+    // gamma 2.0 maybe???
+    for(uint32_t i = 0; i < this->width * this->height; ++i) {
+        color3 &color = this->img_buffer[i];
+        color.x() = M_SQRT(color.x());
+        color.y() = M_SQRT(color.y());
+        color.z() = M_SQRT(color.z());
+    }
+}
+
 void Mini_Tracer::save_as_ppm(const char *file_path) {
     std::ofstream img(file_path);
     if(!img.is_open()) {
@@ -100,9 +110,9 @@ void Mini_Tracer::save_as_ppm(const char *file_path) {
     img << "P3\n" << this->width << " " << this->height << "\n255\n";
     for(uint32_t i = 0; i < this->width * this->height; ++i) {
         color3 rgb = vec3::clamp(this->img_buffer[i], 0.0f, 1.0f);
-        img << (uint32_t)(rgb.x() * 255.999f) << " " 
-            << (uint32_t)(rgb.y() * 255.999f) << " " 
-            << (uint32_t)(rgb.z() * 255.999f) << "\n";
+        img << uint32_t(rgb.x() * 255.999f) << " " 
+            << uint32_t(rgb.y() * 255.999f) << " " 
+            << uint32_t(rgb.z() * 255.999f) << "\n";
     }   
     img.close();
 }

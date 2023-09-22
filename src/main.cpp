@@ -14,7 +14,7 @@ int main(void) {
     const uint32_t max_samples = 1000;
 
     Material m1;
-    m1.albedo            = color3(0.7, 0.2, 0.1);  
+    m1.albedo            = color3(0.7, 0.4, 0.3);  
     m1.emission_color    = color3(0.0f); 
     m1.emission_strength = 0.0f;
 
@@ -26,11 +26,11 @@ int main(void) {
     Material mem;
     mem.albedo            = color3(0.0f);  
     mem.emission_color    = color3(1.0f); 
-    mem.emission_strength = 5.0f;
+    mem.emission_strength = 10.0f;
 
     Scene scene;
 
-    Sphere sphereA(point3(-10, 10, 10), 10, &mem); 
+    Sphere sphereA(point3(10, 10, 20), 10, &mem); 
     scene.add_object(Object_Type::SPHERE, &sphereA);
 
     Sphere sphereB(point3(0, 0, 0), 0.5, &m1);
@@ -47,6 +47,7 @@ int main(void) {
     );
 
     mt.render();
+    mt.preprocess();
     mt.save_as_ppm("./render/image.ppm");
 
     return 0;

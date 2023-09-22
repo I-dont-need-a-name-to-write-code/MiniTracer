@@ -25,6 +25,7 @@ public:
                 uint32_t max_bounces, uint32_t max_samples);
     
     void render();
+    void preprocess();
     void save_as_ppm(const char *file_path);
 
     ~Mini_Tracer();
