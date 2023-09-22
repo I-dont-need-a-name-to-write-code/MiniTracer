@@ -1,13 +1,13 @@
 #include "../include/mtracer.h"
 
 void Mini_Tracer::per_pixel(color3 &fragColor, const vec2 &fragCoord) {
-    uint32_t rng_state;
+    uint32_t rng_state = (uint32_t(fragCoord.x()) * 1973) + 
+                         (uint32_t(fragCoord.y()) * 9277);
+    ray r;
     float u, v, su, sv;
     color3 total_light = color3(0);
-    ray r;
     for(uint32_t sample_pass = 0; sample_pass < this->max_samples; ++sample_pass) 
     {
-        rng_state = (uint32_t(fragCoord.x()) * 1973) + (uint32_t(fragCoord.y()) * 9277) + (sample_pass * 3821);
         u  = (fragCoord.x() + randf(rng_state, 0.0f, 1.0f)) / float(this->width  - 1); // [0, 1]
         v  = (fragCoord.y() + randf(rng_state, 0.0f, 1.0f)) / float(this->height - 1); // [0, 1]
         su = (u * 2.0f) - 1.0f;          // [-1, 1]
@@ -83,7 +83,6 @@ void Mini_Tracer::render() {
     {
         uint32_t p = uint32_t(((float)y / (float)(this->height - 1)) * 100.0f);
         if(p % 5 == 0) std::cerr << "\r[INFO] Progress -> " << p << "%" << std::flush;
-
         for(uint32_t x = 0; x < this->width; ++x) 
         {
             per_pixel(this->img_buffer[x + y * width], vec2(float(x), float(y)));
@@ -110,9 +109,9 @@ void Mini_Tracer::save_as_ppm(const char *file_path) {
     img << "P3\n" << this->width << " " << this->height << "\n255\n";
     for(uint32_t i = 0; i < this->width * this->height; ++i) {
         color3 rgb = vec3::clamp(this->img_buffer[i], 0.0f, 1.0f);
-        img << uint32_t(rgb.x() * 255.999f) << " " 
-            << uint32_t(rgb.y() * 255.999f) << " " 
-            << uint32_t(rgb.z() * 255.999f) << "\n";
+        img << static_cast<uint32_t>(rgb.x() * 255.999f) << " " 
+            << static_cast<uint32_t>(rgb.y() * 255.999f) << " " 
+            << static_cast<uint32_t>(rgb.z() * 255.999f) << "\n";
     }   
     img.close();
 }

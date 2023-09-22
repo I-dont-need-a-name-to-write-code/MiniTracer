@@ -11,10 +11,10 @@ int main(void) {
     const vec3     cam_look_at = vec3(0, 0, 0); 
     const float    vfov = deg_to_rad(90);
     const uint32_t max_bounces = 10;
-    const uint32_t max_samples = 1000;
+    const uint32_t max_samples = 2000;
 
     Material m1;
-    m1.albedo            = color3(0.7, 0.4, 0.3);  
+    m1.albedo            = color3(1, 0.5, 0.32);  
     m1.emission_color    = color3(0.0f); 
     m1.emission_strength = 0.0f;
 
@@ -24,13 +24,13 @@ int main(void) {
     m2.emission_strength = 0.0f;
 
     Material mem;
-    mem.albedo            = color3(0.0f);  
-    mem.emission_color    = color3(1.0f); 
-    mem.emission_strength = 10.0f;
+    mem.albedo            = color3(0.0f);
+    mem.emission_color    = color3(1.0f);
+    mem.emission_strength = 2.0f;
 
     Scene scene;
 
-    Sphere sphereA(point3(10, 10, 20), 10, &mem); 
+    Sphere sphereA(point3(15, 10, -3), 10, &mem); 
     scene.add_object(Object_Type::SPHERE, &sphereA);
 
     Sphere sphereB(point3(0, 0, 0), 0.5, &m1);
