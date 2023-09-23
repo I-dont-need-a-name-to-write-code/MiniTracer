@@ -14,19 +14,19 @@ int main(void) {
     const uint32_t max_samples = 2000;
 
     Material m1;
-    m1.albedo            = color3(1, 0.5, 0.32);  
-    m1.emission_color    = color3(0.0f); 
-    m1.emission_strength = 0.0f;
+    m1.albedo            = color3(1, 0.55, 0);  
+    m1.emission_color    = color3(0.0); 
+    m1.emission_strength = 0.0;
 
     Material m2;
     m2.albedo            = color3(0.2, 0.7, 0.5);  
-    m2.emission_color    = color3(0.0f); 
+    m2.emission_color    = color3(0.0); 
     m2.emission_strength = 0.0f;
 
     Material mem;
-    mem.albedo            = color3(0.0f);
-    mem.emission_color    = color3(1.0f);
-    mem.emission_strength = 2.0f;
+    mem.albedo            = color3(0.0);
+    mem.emission_color    = color3(1.0);
+    mem.emission_strength = 2.0;
 
     Scene scene;
 
@@ -47,7 +47,7 @@ int main(void) {
     );
 
     mt.render();
-    mt.preprocess();
+    mt.postprocess();
     mt.save_as_ppm("./render/image.ppm");
 
     return 0;

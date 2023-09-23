@@ -90,7 +90,7 @@ void Mini_Tracer::render() {
     }
 }
 
-void Mini_Tracer::preprocess() {
+void Mini_Tracer::postprocess() {
     // gamma 2.0 maybe???
     for(uint32_t i = 0; i < this->width * this->height; ++i) {
         color3 &color = this->img_buffer[i];
