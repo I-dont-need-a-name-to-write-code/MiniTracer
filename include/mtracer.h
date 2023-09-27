@@ -12,7 +12,8 @@
 class Scene {
 public:
     Scene() = default;
-    void add_object(Object_Type type, void *p_obj);
+    void add_object(const Sphere &sphere);
+    void add_object(const Triangle &triangle);
 public:
     std::vector<Object> m_objects;
 };

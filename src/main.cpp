@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 
 #include "../include/mtracer.h"
 
@@ -11,34 +10,25 @@ int main(void) {
     const vec3     cam_look_at = vec3(0, 0, 0); 
     const float    vfov = deg_to_rad(90);
     const uint32_t max_bounces = 10;
-    const uint32_t max_samples = 2000;
+    const uint32_t max_samples = 500;
 
-    Material m1;
-    m1.albedo            = color3(1, 0.55, 0);  
-    m1.emission_color    = color3(0.0); 
-    m1.emission_strength = 0.0;
+    Emissive e1(color3(1.0), 2.0);
+    Sphere sphereA(point3(15, 10, -3), 10);
+    sphereA.set_material(Material_Type::EMISSIVE, &e1);
 
-    Material m2;
-    m2.albedo            = color3(0.2, 0.7, 0.5);  
-    m2.emission_color    = color3(0.0); 
-    m2.emission_strength = 0.0f;
+    Lambertian l1(color3(1, 0.6, 0.1));
+    Sphere sphereB(point3(0, 0, 0), 0.5); 
+    sphereB.set_material(Material_Type::LAMBERTIAN, &l1);
 
-    Material mem;
-    mem.albedo            = color3(0.0);
-    mem.emission_color    = color3(1.0);
-    mem.emission_strength = 2.0;
+    Lambertian l2(color3(0.2, 0.7, 0.5));
+    Sphere sphereC(point3(0, -100.5, 0), 100); 
+    sphereC.set_material(Material_Type::LAMBERTIAN, &l2);
 
-    Scene scene;
+    Scene scene; 
+    scene.add_object(sphereA);
+    scene.add_object(sphereB);
+    scene.add_object(sphereC);
 
-    Sphere sphereA(point3(15, 10, -3), 10, &mem); 
-    scene.add_object(Object_Type::SPHERE, &sphereA);
-
-    Sphere sphereB(point3(0, 0, 0), 0.5, &m1);
-    scene.add_object(Object_Type::SPHERE, &sphereB);
-
-    Sphere sphereC(point3(0, -100.5, 0), 100, &m2);
-    scene.add_object(Object_Type::SPHERE, &sphereC);
-    
     Mini_Tracer mt(
         width, height, 
         cam_origin, cam_look_at, vfov, 

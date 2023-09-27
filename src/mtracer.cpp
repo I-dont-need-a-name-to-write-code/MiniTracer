@@ -22,16 +22,28 @@ color3 Mini_Tracer::trace_ray(const ray &r, uint32_t &rng_state) {
     color3 ray_color      = color3(1.0f);
     color3 incoming_light = color3(0.0f);
     ray curr_ray = r;
-    for(uint32_t i = 0; i <= this->max_bounces; ++i) {
+    for(uint32_t i = 0; i <= this->max_bounces; ++i) 
+    {
         Hit_Info info = this->check_ray_collision(curr_ray);
-        if(info.is_hit) {
-            const Material *p_mat = info.p_mat;
-            color3 emission = p_mat->emission_strength * p_mat->emission_color;
-            incoming_light = incoming_light + (ray_color * emission);
-            ray_color = ray_color * p_mat->albedo;
-            curr_ray = ray( (info.hit_point + info.normal * 0.01),
-                            vec3::normalize(info.normal + random_in_unit_sphere(rng_state)) );
-        } else {
+        if(info.is_hit) 
+        {       
+            const Material &mat = info.mat;
+            if(mat.type == Material_Type::LAMBERTIAN) 
+            {
+                const Lambertian &lm = *(Lambertian*)mat.p_mat;
+                ray_color = ray_color * lm.albedo();
+                curr_ray = Lambertian::scatter(lm, info, rng_state);
+            } 
+            else if(mat.type == Material_Type::EMISSIVE) 
+            {
+                const Emissive &em = *(Emissive*)mat.p_mat;
+                color3 emission = em.emission_strength() * em.emission_color(); 
+                incoming_light = incoming_light + (ray_color * emission);   
+                break;
+            }
+        } 
+        else 
+        {
             break;
         }
     }
@@ -58,8 +70,18 @@ Hit_Info Mini_Tracer::check_ray_collision(const ray &r) {
     return result; 
 }
 
-void Scene::add_object(Object_Type type, void *p_obj) {
-    this->m_objects.emplace_back(type, p_obj);
+void Scene::add_object(const Sphere &sphere) {
+    Object obj;
+    obj.type  = Object_Type::SPHERE;
+    obj.p_obj = &sphere;
+    this->m_objects.push_back(obj);
+}
+
+void Scene::add_object(const Triangle &triangle) {
+    Object obj;
+    obj.type  = Object_Type::TRIANGLE;
+    obj.p_obj = &triangle;
+    this->m_objects.push_back(obj);
 }
 
 Mini_Tracer::Mini_Tracer(uint32_t width, uint32_t height, 
