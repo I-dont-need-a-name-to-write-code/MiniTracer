@@ -1,6 +1,7 @@
 #ifndef MINI_MATH_H
 #define MINI_MATH_H
 
+#include <cstdint>
 #include <iostream>
 #include <math.h>
 #include <limits>

@@ -1,6 +1,7 @@
 #ifndef MINI_OBJECT_H
 #define MINI_OBJECT_H
 
+#include <cstdint>
 #include "./mmath.h"
 
 enum class Object_Type {

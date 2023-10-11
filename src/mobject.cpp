@@ -88,9 +88,9 @@ const point3   &Triangle::p2()  const { return this->m_p[2]; }
 const Material &Triangle::mat() const { return this->m_mat;  }
 
 Hit_Info Triangle::hit(const Triangle &triangle, const ray &r) {
-    std::cout << "[DEBUG] UNIMPEMENTED! Triangle::hit \n";
-    exit(69);
-    return Hit_Info{};
+    (void)triangle;
+    (void)r;
+    return Hit_Info {};
 }
 
 
@@ -108,11 +108,11 @@ color3 &Lambertian::albedo() { return this->m_albedo; }
 const color3 &Lambertian::albedo() const { return this->m_albedo; }
     
 ray Lambertian::scatter(const Lambertian &material, const Hit_Info &hit_info, uint32_t &rng_state) {
+    (void)material;
     point3 ray_origin = hit_info.hit_point + (hit_info.normal * 0.01);
     vec3   ray_dir    = vec3::normalize(hit_info.normal + random_in_unit_sphere(rng_state));
     return ray(ray_origin, ray_dir);
 }
-
 
 Emissive::Emissive(const color3 emission_color, const float emission_strength) {
     this->m_emission_color    = emission_color;

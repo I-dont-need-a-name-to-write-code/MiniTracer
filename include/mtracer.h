@@ -2,6 +2,7 @@
 #define MINI_TRACER_H
 
 #include <iostream>
+#include <cstdint>
 #include <fstream>
 #include <vector>
 

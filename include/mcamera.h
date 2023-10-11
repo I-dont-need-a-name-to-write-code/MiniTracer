@@ -1,6 +1,7 @@
 #ifndef MINI_CAMERA_H
 #define MINI_CAMERA_H
 
+#include <cstdint>
 #include "./mmath.h"
 
 class Camera {

@@ -10,7 +10,7 @@ int main(void) {
     const vec3     cam_look_at = vec3(0, 0, 0); 
     const float    vfov = deg_to_rad(90);
     const uint32_t max_bounces = 10;
-    const uint32_t max_samples = 500;
+    const uint32_t max_samples = 100;
 
     Emissive e1(color3(1.0), 2.0);
     Sphere sphereA(point3(15, 10, -3), 10);

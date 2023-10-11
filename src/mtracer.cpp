@@ -110,6 +110,7 @@ void Mini_Tracer::render() {
             per_pixel(this->img_buffer[x + y * width], vec2(float(x), float(y)));
         }
     }
+    std::cout << "\n[INFO] Rendering Complete\n";
 }
 
 void Mini_Tracer::postprocess() {

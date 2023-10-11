@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -Wpedantic -std=c++11 
+CXXFLAGS = -Wall -Wextra -Wpedantic -std=c++20
 SOURCES = $(wildcard ./src/*.cpp)
 OBJECTS = $(patsubst ./src/%.cpp,./build/%.o,$(SOURCES))
 BIN = ./bin/prog
