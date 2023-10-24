@@ -252,6 +252,10 @@ std::ostream &operator<<(std::ostream &out, const mat4x4 &other) {
 }
 
 // VEC2
+vec2::vec2() {
+    this->m_v[0] = this->m_v[1] = 0.0f;
+}
+
 vec2::vec2(float s) {
     this->m_v[0] = this->m_v[1] = s;
 }
@@ -292,6 +296,51 @@ vec2 vec2::clamp(const vec2 &a, const vec2 &min, const vec2 &max) {
 vec2 vec2::clamp(const vec2 &a, const float min, const float max) {        
     return vec2( clampf(a.m_v[0], min, max),
                  clampf(a.m_v[1], min, max) );
+}
+
+vec2 &vec2::operator+=(const float s) {
+    this->m_v[0] += s;
+    this->m_v[1] += s;
+    return *this;
+}
+
+vec2 &vec2::operator+=(const vec2 &other) {
+    this->m_v[0] += other.m_v[0];
+    this->m_v[1] += other.m_v[1];
+    return *this;
+}
+
+vec2 &vec2::operator-=(const float s) {
+    this->m_v[0] -= s;
+    this->m_v[1] -= s;
+    return *this;
+}
+
+vec2 &vec2::operator-=(const vec2 &other) {
+    this->m_v[0] -= other.m_v[0];
+    this->m_v[1] -= other.m_v[1];
+    return *this;
+}
+
+vec2 &vec2::operator*=(const float s) {
+    this->m_v[0] *= s;
+    this->m_v[1] *= s;
+    return *this;
+}
+
+vec2 &vec2::operator*=(const vec2 &other) {
+    this->m_v[0] *= other.m_v[0];
+    this->m_v[1] *= other.m_v[1];
+    return *this;
+}
+
+vec2 &vec2::operator/=(const float s) {
+    return (*this *= (1 / s));
+}
+
+vec2 &vec2::operator/=(const vec2 &other) {
+    *this = *this / other;
+    return *this;
 }
 
 vec2 operator-(const vec2 &a) {
@@ -376,9 +425,14 @@ std::ostream &operator<<(std::ostream& out, const vec2& vec) {
 }
 
 // VEC3
+vec3::vec3() {
+    this->m_v[0] = this->m_v[1] = this->m_v[2] = 0.0f;
+}
+
 vec3::vec3(float s) {
     this->m_v[0] = this->m_v[1] = this->m_v[2] = s;
 }
+
 vec3::vec3(float x, float y, float z) {
     this->m_v[0] = x; 
     this->m_v[1] = y;
@@ -422,6 +476,57 @@ vec3 vec3::clamp(const vec3 &a, const float min, const float max) {
     return vec3( clampf(a.m_v[0], min, max),
                  clampf(a.m_v[1], min, max), 
                  clampf(a.m_v[2], min, max) );
+}
+
+vec3 &vec3::operator+=(const float s) {
+    this->m_v[0] += s;
+    this->m_v[1] += s;
+    this->m_v[2] += s;
+    return *this;
+}
+
+vec3 &vec3::operator+=(const vec3 &other) {
+    this->m_v[0] += other.m_v[0];
+    this->m_v[1] += other.m_v[1];
+    this->m_v[2] += other.m_v[2];
+    return *this;
+}
+
+vec3 &vec3::operator-=(const float s) {
+    this->m_v[0] -= s;
+    this->m_v[1] -= s;
+    this->m_v[2] -= s;
+    return *this;
+}
+
+vec3 &vec3::operator-=(const vec3 &other) {
+    this->m_v[0] -= other.m_v[0];
+    this->m_v[1] -= other.m_v[1];
+    this->m_v[2] -= other.m_v[2];
+    return *this;
+}
+
+vec3 &vec3::operator*=(const float s) {
+    this->m_v[0] *= s;
+    this->m_v[1] *= s;
+    this->m_v[2] *= s;
+    return *this;
+}
+
+vec3 &vec3::operator*=(const vec3 &other) {
+    this->m_v[0] *= other.m_v[0];
+    this->m_v[1] *= other.m_v[1];
+    this->m_v[2] *= other.m_v[2];
+    return *this;
+}
+
+vec3 &vec3::operator/=(const float s) {
+    return (*this *= (1 / s));
+}
+
+vec3 &vec3::operator/=(const vec3 &other) {
+    *this = *this / other;
+    return *this;
 }
 
 vec3 operator-(const vec3 &a) {

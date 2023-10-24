@@ -72,7 +72,7 @@ private:
 
 class vec2 {
 public:
-    vec2() = default;
+    vec2();
     vec2(float s);
     vec2(float x, float y);
     vec2(const vec2& other);
@@ -89,6 +89,18 @@ public:
     static vec2 lerp(const vec2 &a, const vec2 &b, const float t);
     static vec2 clamp(const vec2 &a, const vec2 &min, const vec2 &max);
     static vec2 clamp(const vec2 &a, const float min, const float max);
+
+    vec2 &operator+=(const float s);
+    vec2 &operator+=(const vec2 &other);
+
+    vec2 &operator-=(const float s);
+    vec2 &operator-=(const vec2 &other);
+
+    vec2 &operator*=(const float s);
+    vec2 &operator*=(const vec2 &other);
+
+    vec2 &operator/=(const float s);
+    vec2 &operator/=(const vec2 &other);
 
     friend vec2 operator-(const vec2 &a);
     friend vec2 operator+(const vec2 &a, const vec2& b);
@@ -121,7 +133,7 @@ using point2 = vec2;
 
 class vec3 {
 public:
-    vec3() = default;
+    vec3();
     vec3(float s);
     vec3(float x, float y, float z);
     vec3(const vec3& other);
@@ -140,6 +152,18 @@ public:
     static vec3 lerp(const vec3 &a, const vec3 &b, const float t);
     static vec3 clamp(const vec3 &a, const vec3 &min, const vec3 &max);
     static vec3 clamp(const vec3 &a, const float min, const float max);
+
+    vec3 &operator+=(const float s);
+    vec3 &operator+=(const vec3 &other);
+
+    vec3 &operator-=(const float s);
+    vec3 &operator-=(const vec3 &other);
+
+    vec3 &operator*=(const float s);
+    vec3 &operator*=(const vec3 &other);
+
+    vec3 &operator/=(const float s);
+    vec3 &operator/=(const vec3 &other);
     
     friend vec3 operator-(const vec3 &a);
     friend vec3 operator+(const vec3 &a, const vec3& b);
