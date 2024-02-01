@@ -19,4 +19,3 @@ run:
 
 clean:
 	rm -rf $(OBJECTS) $(BIN) ./render/image.ppm
-
